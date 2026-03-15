@@ -1,46 +1,69 @@
 erDiagram
-    USER ||--o{ CELLAR_ACCESS : manages
-    CELLAR ||--o{ CELLAR_ACCESS : shared_with
-    CELLAR ||--o{ COMPARTMENT : consists_of
-    STORAGE_TYPE ||--o{ COMPARTMENT : defines
+    USER ||--o{ CELLAR_MEMBERSHIP : has
+    CELLAR ||--o{ CELLAR_MEMBERSHIP : shared_with
+    CELLAR ||--o{ COMPARTMENT : contains
+    CELLAR ||--o{ BOTTLE : inventories
+    WINE ||--o{ BOTTLE : instantiated_as
+    PRODUCER ||--o{ WINE : produces
+    COUNTRY ||--o{ REGION : contains
+    REGION ||--o{ APPELLATION : contains
+    REGION ||--o{ WINE : classifies_when_no_appellation
+    APPELLATION ||--o{ WINE : classifies
+    WINE ||--o{ WINE_GRAPE : composed_of
+    GRAPE ||--o{ WINE_GRAPE : used_in
+    GRAPE ||--o{ GRAPE_ALIAS : known_as
+    GRAPE ||--o{ GRAPE_AROMA : expresses
+    GRAPE ||--o{ GRAPE_CLASSIC_REGION : traditional_in
+    REGION ||--o{ GRAPE_CLASSIC_REGION : classic_for
+    GRAPE ||--o{ GRAPE_WINE_STYLE : typical_for
+    BOTTLE_SIZE ||--o{ BOTTLE : sizes
     COMPARTMENT ||--o{ BOTTLE : stores
-    WINE_CATALOG ||--o{ BOTTLE : describes
-    COUNTRY ||--o{ WINE_CATALOG : originates
-    USER ||--o{ ACTIVITY_LOG : performs
-    BOTTLE ||--o{ ACTIVITY_LOG : logs
+    USER ||--o{ EVENT : performs
+    CELLAR ||--o{ EVENT : context_for
+    COMPARTMENT ||--o{ EVENT : target_of
+    BOTTLE ||--o{ EVENT : target_of
 
     USER {
         string id PK
         string username
         string email
+        string display_name
+        datetime created_at
     }
 
     CELLAR {
         string id PK
         string name
         string location
+        string description
+        datetime created_at
     }
 
-    CELLAR_ACCESS {
+    CELLAR_MEMBERSHIP {
+        string id PK
         string user_id FK
         string cellar_id FK
-        string role "OWNER, EDITOR, VIEWER"
-    }
-
-    STORAGE_TYPE {
-        string id PK
-        string name "e.g. wine fridge, wood shelf"
-        int rows
-        int cols
-        int capacity
+        string role "OWNER, CONTRIBUTOR, VIEWER"
+        datetime granted_at
+        string granted_by_user_id FK
     }
 
     COMPARTMENT {
         string id PK
         string cellar_id FK
-        string storage_type_id FK
-        string label "Section A"
+        string parent_compartment_id FK "nullable, supports nested sections"
+        string label
+        string compartment_type "SHELF, BIN, FRIDGE_ZONE, RACK"
         int display_order
+        int capacity
+        datetime created_at
+    }
+
+    PRODUCER {
+        string id PK
+        string name
+        string website_url
+        datetime created_at
     }
 
     COUNTRY {
@@ -49,13 +72,74 @@ erDiagram
         string iso_code
     }
 
-    WINE_CATALOG {
+    REGION {
+        string id PK
+        string country_id FK
+        string name
+    }
+
+    APPELLATION {
+        string id PK
+        string region_id FK
+        string name
+        string classification
+    }
+
+    GRAPE {
         string id PK
         string name
-        string producer
-        string country_id FK
-        string region
-        string type "Red, White, Sparkling"
+        string color
+        string origin_text "e.g. Italy, Lazio"
+        string acidity_level "nullable"
+        string tannin_level "nullable"
+    }
+
+    GRAPE_ALIAS {
+        string id PK
+        string grape_id FK
+        string alias_name
+    }
+
+    GRAPE_AROMA {
+        string id PK
+        string grape_id FK
+        string aroma
+    }
+
+    GRAPE_CLASSIC_REGION {
+        string id PK
+        string grape_id FK
+        string region_id FK
+    }
+
+    GRAPE_WINE_STYLE {
+        string id PK
+        string grape_id FK
+        string style_name
+    }
+
+    WINE {
+        string id PK
+        string producer_id FK
+        string region_id FK "nullable, used when appellation_id is null"
+        string appellation_id FK "nullable"
+        string name
+        string wine_type "RED, WHITE, ROSE, SPARKLING, DESSERT, FORTIFIED"
+        string sweetness_level "nullable"
+        datetime created_at
+    }
+
+    WINE_GRAPE {
+        string wine_id FK
+        string grape_id FK
+        decimal percentage "nullable"
+        string role "PRIMARY, SECONDARY"
+    }
+
+    BOTTLE_SIZE {
+        string id PK
+        string label "750ml, 1.5L"
+        int volume_ml
     }
 
     BOTTLE {
@@ -63,20 +147,27 @@ erDiagram
         string wine_id FK
         string cellar_id FK
         string compartment_id FK
-        string status "IN_STOCK, CONSUMED"
+        string bottle_size_id FK
         int vintage
-        int row_index
-        int col_index
-        int drink_from_year
-        int drink_until_year
-        string user_image_url
+        string bottle_status "IN_STOCK, RESERVED, CONSUMED, REMOVED"
+        string acquisition_type "PURCHASE, GIFT, TRANSFER"
+        decimal purchase_price "nullable"
+        string purchase_currency "nullable"
+        date acquired_on "nullable"
+        int drink_from_year "nullable"
+        int drink_until_year "nullable"
+        string location_code "nullable exact slot reference"
+        string image_url "nullable"
+        datetime created_at
     }
 
-    ACTIVITY_LOG {
+    EVENT {
         string id PK
-        string user_id FK
-        string cellar_id FK
-        string action "ADDED, DRUNK, MOVED"
-        datetime timestamp
-        string metadata "JSON details"
+        string actor_user_id FK
+        string cellar_id FK "context and cellar-level target"
+        string compartment_id FK "nullable target"
+        string bottle_id FK "nullable target"
+        string event_type "BOTTLE_ADDED, BOTTLE_MOVED, BOTTLE_CONSUMED, BOTTLE_REMOVED, COMPARTMENT_CREATED, COMPARTMENT_REMOVED, CELLAR_CREATED, CELLAR_REMOVED"
+        datetime occurred_at
+        string metadata_json "JSON details such as move from/to"
     }
