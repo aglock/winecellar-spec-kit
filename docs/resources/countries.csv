@@ -1,0 +1,249 @@
+name,code,priority
+"Afghanistan",AF,99
+"Åland Islands",AX,99
+"Albania",AL,99
+"Algeria",DZ,99
+"American Samoa",AS,99
+"Andorra",AD,99
+"Angola",AO,99
+"Anguilla",AI,99
+"Antarctica&#91;e&#93;",AQ,99
+"Antigua and Barbuda",AG,99
+"Argentina",AR,99
+"Armenia",AM,99
+"Aruba",AW,99
+"Australia&#91;f&#93;",AU,99
+"Austria",AT,99
+"Azerbaijan",AZ,99
+"Bahamas (the)",BS,99
+"Bahrain",BH,99
+"Bangladesh",BD,99
+"Barbados",BB,99a
+"Belarus",BY,99
+"Belgium",BE,99
+"Belize",BZ,99
+"Benin",BJ,99
+"Bermuda",BM,99
+"Bhutan",BT,99
+"Bolivia (Plurinational State of)",BO,99
+"Bosnia and Herzegovina",BA,99
+"Botswana",BW,99
+"Bouvet Island",BV,99
+"Brazil",BR,99
+"British Indian Ocean Territory (the)",IO,99
+"Brunei Darussalam&#91;i&#93;",BN,99
+"Bulgaria",BG,99
+"Burkina Faso",BF,99
+"Burundi",BI,99
+"Cabo Verde&#91;j&#93;",CV,99
+"Cambodia",KH,99
+"Cameroon",CM,99
+"Canada",CA,99
+"Cayman Islands (the)",KY,99
+"Central African Republic (the)",CF,99
+"Chad",TD,99
+"Chile",CL,99
+"China",CN,99
+"Christmas Island",CX,99
+"Cocos (Keeling) Islands (the)",CC,99
+"Colombia",CO,99
+"Comoros (the)",KM,99
+"Congo (the Democratic Republic of the)",CD,99
+"Congo (the)&#91;k&#93;",CG,99
+"Cook Islands (the)",CK,99
+"Costa Rica",CR,99
+"Côte d'Ivoire&#91;l&#93;",CI,99
+"Croatia",HR,99
+"Cuba",CU,99
+"Curaçao",CW,99
+"Cyprus",CY,99
+"Czechia&#91;m&#93;",CZ,99
+"Denmark",DK,99
+"Djibouti",DJ,99
+"Dominica",DM,99
+"Dominican Republic (the)",DO,99
+"Ecuador",EC,99
+"Egypt",EG,99
+"El Salvador",SV,99
+"Equatorial Guinea",GQ,99
+"Eritrea",ER,99
+"Estonia",EE,99
+"Eswatini&#91;n&#93;",SZ,99
+"Ethiopia",ET,99
+"Falkland Islands (the) &#91;o&#93;",FK,99
+"Faroe Islands (the)",FO,99
+"Fiji",FJ,99
+"Finland",FI,99
+"France&#91;p&#93;",FR,99
+"French Guiana",GF,99
+"French Polynesia",PF,99
+"French Southern Territories (the)&#91;q&#93;",TF,99
+"Gabon",GA,99
+"Gambia (the)",GM,99
+"Georgia",GE,99
+"Germany",DE,99
+"Ghana",GH,99
+"Gibraltar",GI,99
+"Greece",GR,99
+"Greenland",GL,99
+"Grenada",GD,99
+"Guadeloupe",GP,99
+"Guam",GU,99
+"Guatemala",GT,99
+"Guernsey",GG,99
+"Guinea",GN,99
+"Guinea-Bissau",GW,99
+"Guyana",GY,99
+"Haiti",HT,99
+"Heard Island and McDonald Islands",HM,99
+"Holy See (the)&#91;r&#93;",VA,99
+"Honduras",HN,99
+"Hong Kong",HK,99
+"Hungary",HU,99
+"Iceland",IS,99
+"India",IN,99
+"Indonesia",ID,99
+"Iran (Islamic Republic of)&#91;s&#93;",IR,99
+"Iraq",IQ,99
+"Ireland",IE,99
+"Isle of Man",IM,99
+"Israel",IL,99
+"Italy",IT,99
+"Jamaica",JM,99
+"Japan",JP,99
+"Jersey",JE,99
+"Jordan",JO,99
+"Kazakhstan",KZ,99
+"Kenya",KE,99
+"Kiribati",KI,99
+"Korea (the Democratic People's Republic of)&#91;t&#93;",KP,99
+"Korea (the Republic of)&#91;u&#93;",KR,99
+"Kuwait",KW,99
+"Kyrgyzstan",KG,99
+"Lao People's Democratic Republic (the)&#91;v&#93;",LA,99
+"Latvia",LV,99
+"Lebanon",LB,99
+"Lesotho",LS,99
+"Liberia",LR,99
+"Libya",LY,99
+"Liechtenstein",LI,99
+"Lithuania",LT,99
+"Luxembourg",LU,99
+"Macao&#91;w&#93;",MO,99
+"Madagascar",MG,99
+"Malawi",MW,99
+"Malaysia",MY,99
+"Maldives",MV,99
+"Mali",ML,99
+"Malta",MT,99
+"Marshall Islands (the)",MH,99
+"Martinique",MQ,99
+"Mauritania",MR,99
+"Mauritius",MU,99
+"Mayotte",YT,99
+"Mexico",MX,99
+"Micronesia (Federated States of)",FM,99
+"Moldova (the Republic of)",MD,99
+"Monaco",MC,99
+"Mongolia",MN,99
+"Montenegro",ME,99
+"Montserrat",MS,99
+"Morocco",MA,99
+"Mozambique",MZ,99
+"Myanmar&#91;x&#93;",MM,99
+"Namibia",NA,99
+"Nauru",NR,99
+"Nepal",NP,99
+"Netherlands (Kingdom of the)",NL,99
+"New Caledonia",NC,99
+"New Zealand",NZ,99
+"Nicaragua",NI,99
+"Niger (the)",NE,99
+"Nigeria",NG,99
+"Niue",NU,99
+"Norfolk Island",NF,99
+"North Macedonia&#91;y&#93;",MK,99
+"Northern Mariana Islands (the)",MP,99
+"Norway",NO,99
+"Oman",OM,99
+"Pakistan",PK,99
+"Palau",PW,99
+"Palestine, State of",PS,99
+"Panama",PA,99
+"Papua New Guinea",PG,99
+"Paraguay",PY,99
+"Peru",PE,99
+"Philippines (the)",PH,99
+"Pitcairn&#91;z&#93;",PN,99
+"Poland",PL,99
+"Portugal",PT,99
+"Puerto Rico",PR,99
+"Qatar",QA,99
+"Réunion",RE,99
+"Romania",RO,99
+"Russian Federation (the)&#91;aa&#93;",RU,99
+"Rwanda",RW,99
+"Saint Barthélemy",BL,99
+"Saint Helena Ascension Island Tristan da Cunha",SH,99
+"Saint Kitts and Nevis",KN,99
+"Saint Lucia",LC,99
+"Saint Martin (French part)",MF,99
+"Saint Pierre and Miquelon",PM,99
+"Saint Vincent and the Grenadines",VC,99
+"Samoa",WS,99
+"San Marino",SM,99
+"Sao Tome and Principe",ST,99
+"Saudi Arabia",SA,99
+"Senegal",SN,99
+"Serbia",RS,99
+"Seychelles",SC,99
+"Sierra Leone",SL,99
+"Singapore",SG,99
+"Sint Maarten (Dutch part)",SX,99
+"Slovakia",SK,99
+"Slovenia",SI,99
+"Solomon Islands",SB,99
+"Somalia",SO,99
+"South Africa",ZA,99
+"South Georgia and the South Sandwich Islands",GS,99
+"South Sudan",SS,99
+"Spain",ES,99
+"Sri Lanka",LK,99
+"Sudan (the)",SD,99
+"Suriname",SR,99
+"Svalbard Jan Mayen",SJ,99
+"Sweden",SE,99
+"Switzerland",CH,99
+"Syrian Arab Republic (the)&#91;ac&#93;",SY,99
+"Taiwan (Province of China)&#91;ad&#93;",TW,99
+"Tajikistan",TJ,99
+"Tanzania, the United Republic of",TZ,99
+"Thailand",TH,99
+"Timor-Leste&#91;af&#93;",TL,99
+"Togo",TG,99
+"Tokelau",TK,99
+"Tonga",TO,99
+"Trinidad and Tobago",TT,99
+"Tunisia",TN,99
+"Türkiye&#91;ag&#93;",TR,99
+"Turkmenistan",TM,99
+"Turks and Caicos Islands (the)",TC,99
+"Tuvalu",TV,99
+"Uganda",UG,99
+"Ukraine&#91;c&#93;",UA,99
+"United Arab Emirates (the)",AE,99
+"United Kingdom of Great Britain and Northern Ireland (the)",GB,99
+"United States Minor Outlying Islands (the)&#91;13&#93;&#91;ai&#93;",UM,99
+"United States of America (the)",US,99
+"Uruguay",UY,99
+"Uzbekistan",UZ,99
+"Vanuatu",VU,99
+"Venezuela (Bolivarian Republic of)",VE,99
+"Viet Nam&#91;ak&#93;",VN,99
+"Virgin Islands (British)&#91;al&#93;",VG,99
+"Virgin Islands (U.S.)&#91;am&#93;",VI,99
+"Wallis and Futuna",WF,99
+"Western Sahara&#91;an&#93;",EH,99
+"Yemen",YE,99
+"Zambia",ZM,99
+"Zimbabwe",ZW,99

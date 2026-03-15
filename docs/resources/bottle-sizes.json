@@ -1,0 +1,104 @@
+[
+  {
+    "name": "Piccolo",
+    "volumeMl": 187.5,
+    "volumeL": 0.1875,
+    "standardBottleEquivalent": 0.25,
+    "aliases": [
+      "Split",
+      "Quarter Bottle"
+    ]
+  },
+  {
+    "name": "Half Bottle",
+    "volumeMl": 375,
+    "volumeL": 0.375,
+    "standardBottleEquivalent": 0.5,
+    "aliases": [
+      "Demi",
+      "Demi Bottle"
+    ]
+  },
+  {
+    "name": "Jennie",
+    "volumeMl": 500,
+    "volumeL": 0.5,
+    "standardBottleEquivalent": 0.67,
+    "aliases": [
+      "Half Liter",
+      "Demie",
+      "Pot"
+    ]
+  },
+  {
+    "name": "Standard",
+    "volumeMl": 750,
+    "volumeL": 0.75,
+    "standardBottleEquivalent": 1,
+    "aliases": [
+      "Bottle"
+    ]
+  },
+  {
+    "name": "Liter",
+    "volumeMl": 1000,
+    "volumeL": 1,
+    "standardBottleEquivalent": 1.33,
+    "aliases": [
+      "Litre"
+    ]
+  },
+  {
+    "name": "Magnum",
+    "volumeMl": 1500,
+    "volumeL": 1.5,
+    "standardBottleEquivalent": 2,
+    "aliases": []
+  },
+  {
+    "name": "Jeroboam",
+    "volumeMl": 3000,
+    "volumeL": 3,
+    "standardBottleEquivalent": 4,
+    "aliases": [
+      "Double Magnum"
+    ]
+  },
+  {
+    "name": "Rehoboam",
+    "volumeMl": 4500,
+    "volumeL": 4.5,
+    "standardBottleEquivalent": 6,
+    "aliases": []
+  },
+  {
+    "name": "Methuselah",
+    "volumeMl": 6000,
+    "volumeL": 6,
+    "standardBottleEquivalent": 8,
+    "aliases": [
+      "Imperial"
+    ]
+  },
+  {
+    "name": "Salmanazar",
+    "volumeMl": 9000,
+    "volumeL": 9,
+    "standardBottleEquivalent": 12,
+    "aliases": []
+  },
+  {
+    "name": "Balthazar",
+    "volumeMl": 12000,
+    "volumeL": 12,
+    "standardBottleEquivalent": 16,
+    "aliases": []
+  },
+  {
+    "name": "Nebuchadnezzar",
+    "volumeMl": 15000,
+    "volumeL": 15,
+    "standardBottleEquivalent": 20,
+    "aliases": []
+  }
+]

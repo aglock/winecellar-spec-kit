@@ -1,0 +1,82 @@
+erDiagram
+    USER ||--o{ CELLAR_ACCESS : manages
+    CELLAR ||--o{ CELLAR_ACCESS : shared_with
+    CELLAR ||--o{ COMPARTMENT : consists_of
+    STORAGE_TYPE ||--o{ COMPARTMENT : defines
+    COMPARTMENT ||--o{ BOTTLE : stores
+    WINE_CATALOG ||--o{ BOTTLE : describes
+    COUNTRY ||--o{ WINE_CATALOG : originates
+    USER ||--o{ ACTIVITY_LOG : performs
+    BOTTLE ||--o{ ACTIVITY_LOG : logs
+
+    USER {
+        string id PK
+        string username
+        string email
+    }
+
+    CELLAR {
+        string id PK
+        string name
+        string location
+    }
+
+    CELLAR_ACCESS {
+        string user_id FK
+        string cellar_id FK
+        string role "OWNER, EDITOR, VIEWER"
+    }
+
+    STORAGE_TYPE {
+        string id PK
+        string name "e.g. wine fridge, wood shelf"
+        int rows
+        int cols
+        int capacity
+    }
+
+    COMPARTMENT {
+        string id PK
+        string cellar_id FK
+        string storage_type_id FK
+        string label "Section A"
+        int display_order
+    }
+
+    COUNTRY {
+        string id PK
+        string name
+        string iso_code
+    }
+
+    WINE_CATALOG {
+        string id PK
+        string name
+        string producer
+        string country_id FK
+        string region
+        string type "Red, White, Sparkling"
+    }
+
+    BOTTLE {
+        string id PK
+        string wine_id FK
+        string cellar_id FK
+        string compartment_id FK
+        string status "IN_STOCK, CONSUMED"
+        int vintage
+        int row_index
+        int col_index
+        int drink_from_year
+        int drink_until_year
+        string user_image_url
+    }
+
+    ACTIVITY_LOG {
+        string id PK
+        string user_id FK
+        string cellar_id FK
+        string action "ADDED, DRUNK, MOVED"
+        datetime timestamp
+        string metadata "JSON details"
+    }
