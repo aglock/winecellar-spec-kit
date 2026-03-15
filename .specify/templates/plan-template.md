@@ -12,20 +12,22 @@
 ## Technical Context
 
 <!--
-  ACTION REQUIRED: Replace the content in this section with the technical details
-  for the project. The structure here is presented in advisory capacity to guide
-  the iteration process.
+  ACTION REQUIRED: Start from the project defaults below and refine them only
+  when the feature requires additional detail.
 -->
 
-**Language/Version**: [e.g., Python 3.11, Swift 5.9, Rust 1.75 or NEEDS CLARIFICATION]  
-**Primary Dependencies**: [e.g., FastAPI, UIKit, LLVM or NEEDS CLARIFICATION]  
-**Storage**: [if applicable, e.g., PostgreSQL, CoreData, files or N/A]  
-**Testing**: [e.g., pytest, XCTest, cargo test or NEEDS CLARIFICATION]  
-**Target Platform**: [e.g., Linux server, iOS 15+, WASM or NEEDS CLARIFICATION]
-**Project Type**: [e.g., library/cli/web-service/mobile-app/compiler/desktop-app or NEEDS CLARIFICATION]  
-**Performance Goals**: [domain-specific, e.g., 1000 req/s, 10k lines/sec, 60 fps or NEEDS CLARIFICATION]  
-**Constraints**: [domain-specific, e.g., <200ms p95, <100MB memory, offline-capable or NEEDS CLARIFICATION]  
-**Scale/Scope**: [domain-specific, e.g., 10k users, 1M LOC, 50 screens or NEEDS CLARIFICATION]
+**Backend Language/Version**: Java with Spring Boot 4  
+**Frontend Language/Version**: React Native with Vite  
+**Primary Dependencies**: Spring Boot 4, MongoDB 8, React Native, Tailwind CSS, Vite  
+**Storage**: MongoDB 8 document database  
+**Testing**: Backend, frontend, integration, and contract tests as relevant to the feature; all tests MUST pass after each phase before the next phase begins  
+**Target Platform**: Web application with Spring Boot backend and React Native frontend  
+**Project Type**: Full-stack application  
+**UI Design Source**: `docs/ui-inspiration/design-brief.md` is the required design reference for all user-facing work  
+**Data Modeling Source**: `docs/architecture/information-model.mmd` is the required source information model and MUST be translated into a MongoDB data model using document-database principles  
+**Performance Goals**: [Document measurable user-facing performance goals for this feature]  
+**Constraints**: Maintain alignment with the constitution, the UI design brief, and MongoDB-oriented document modeling principles  
+**Scale/Scope**: Multi-user wine cellar application with shared cellar access and membership-based authorization
 
 ## Constitution Check
 
@@ -52,6 +54,13 @@
   feedback patterns.
 - Performance expectations are measurable whenever the feature has user-visible
   latency, throughput, or scale implications.
+- User-facing plans reference `docs/ui-inspiration/design-brief.md` and explain
+  how the feature stays consistent with it.
+- Data design references `docs/architecture/information-model.mmd` and explains
+  how the information model is mapped into MongoDB documents, references, and
+  aggregates without violating domain semantics.
+- Each phase defines the test suite to run at the end of the phase, and the
+  plan MUST stop if that phase's tests do not pass.
 
 ## Project Structure
 
@@ -76,19 +85,6 @@ specs/[###-feature]/
 -->
 
 ```text
-# [REMOVE IF UNUSED] Option 1: Single project (DEFAULT)
-src/
-├── models/
-├── services/
-├── cli/
-└── lib/
-
-tests/
-├── contract/
-├── integration/
-└── unit/
-
-# [REMOVE IF UNUSED] Option 2: Web application (when "frontend" + "backend" detected)
 backend/
 ├── src/
 │   ├── models/
@@ -102,17 +98,13 @@ frontend/
 │   ├── pages/
 │   └── services/
 └── tests/
-
-# [REMOVE IF UNUSED] Option 3: Mobile + API (when "iOS/Android" detected)
-api/
-└── [same as backend above]
-
-ios/ or android/
-└── [platform-specific structure: feature modules, UI flows, platform tests]
 ```
 
 **Structure Decision**: [Document the selected structure and reference the real
 directories captured above]
+
+**Phase Test Gate**: At the end of every phase, list the exact tests to run and
+record that they passed before continuing to the next phase.
 
 ## Complexity Tracking
 
