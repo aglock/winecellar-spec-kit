@@ -38,15 +38,16 @@ only activated accounts can sign in.
 who can later access cellar functionality.
 
 **Independent Test**: Submit the registration form with valid details and
-verify that an activation email is issued with a link that works for 15 minutes
-and that sign-in remains blocked until activation succeeds.
+verify that an activation link is generated through the configured activation
+delivery mechanism, that the link works for 15 minutes, and that sign-in
+remains blocked until activation succeeds.
 
 **Acceptance Scenarios**:
 
 1. **Given** a visitor provides valid registration details, **When** they submit
    the registration form, **Then** the system creates a pending account and
-   sends an activation email with a single-use activation link valid for 15
-   minutes from issuance.
+   generates a single-use activation link through the configured activation
+   delivery mechanism, valid for 15 minutes from issuance.
 2. **Given** a pending account has received a valid activation link, **When**
    the user opens the link within 15 minutes, **Then** the account becomes
    active and ready for sign-in.
@@ -104,48 +105,51 @@ page after the session expires without signing in again.
 - **FR-002**: The system MUST provide a public registration page for new users.
 - **FR-003**: The system MUST create a new user account in a pending state when
   valid registration data is submitted.
-- **FR-004**: The system MUST send an activation email to a newly registered
-  user.
-- **FR-005**: The activation email MUST contain an activation link that is valid
-  for exactly 15 minutes from issuance.
-- **FR-006**: The system MUST activate the account when the user opens a valid,
+- **FR-004**: The system MUST generate an activation link for a newly
+  registered user through a replaceable activation-delivery mechanism.
+- **FR-005**: In early iterations, the activation-delivery mechanism MUST log
+  the activation link in the backend application log; later iterations MAY
+  deliver the same activation link through email.
+- **FR-006**: The activation link MUST be valid for exactly 15 minutes from
+  issuance.
+- **FR-007**: The system MUST activate the account when the user opens a valid,
   unused activation link within its validity window.
-- **FR-007**: The system MUST reject expired or already-used activation links
+- **FR-008**: The system MUST reject expired or already-used activation links
   and provide guidance to the user that the activation attempt did not succeed.
-- **FR-008**: The system MUST prevent sign-in for accounts that have not yet
+- **FR-009**: The system MUST prevent sign-in for accounts that have not yet
   been activated.
-- **FR-009**: The system MUST provide a public login page for existing users.
-- **FR-010**: The system MUST start an authenticated session when an activated
+- **FR-010**: The system MUST provide a public login page for existing users.
+- **FR-011**: The system MUST start an authenticated session when an activated
   user signs in with valid credentials.
-- **FR-011**: An authenticated session created by sign-in MUST remain active for
+- **FR-012**: An authenticated session created by sign-in MUST remain active for
   12 hours unless the user signs out first.
-- **FR-012**: The system MUST provide a cellars page that is accessible only to
+- **FR-013**: The system MUST provide a cellars page that is accessible only to
   authenticated users.
-- **FR-013**: The cellars page MUST list the cellars the signed-in user can
+- **FR-014**: The cellars page MUST list the cellars the signed-in user can
   access through membership.
-- **FR-014**: The cellars page MUST show a clear empty state when the signed-in
+- **FR-015**: The cellars page MUST show a clear empty state when the signed-in
   user has no accessible cellars yet.
-- **FR-015**: The system MUST require sign-in before allowing access to the
+- **FR-016**: The system MUST require sign-in before allowing access to the
   cellars page.
-- **FR-016**: The system MUST use terminology consistent with the sitemap and
+- **FR-017**: The system MUST use terminology consistent with the sitemap and
   access model for public entry pages and the cellars area.
-- **FR-017**: The feature MUST preserve a consistent user experience across
+- **FR-018**: The feature MUST preserve a consistent user experience across
   start, registration, login, activation, and cellars flows, including feedback
   for success, failure, expiration, and unauthenticated access.
-- **FR-018**: The feature MUST include automated tests covering registration,
+- **FR-019**: The feature MUST include automated tests covering registration,
   activation expiry, sign-in, session duration behavior, authenticated access to
   the cellars page, and unauthenticated access denial.
-- **FR-019**: The system MUST record an identity access-history event when a
+- **FR-020**: The system MUST record an identity access-history event when a
   user account is registered and when an activation link is issued.
-- **FR-020**: The system MUST record an identity access-history event when an
-  account is activated, when sign-in succeeds, and when sign-in fails.
 - **FR-021**: The system MUST record an identity access-history event when an
+  account is activated, when sign-in succeeds, and when sign-in fails.
+- **FR-022**: The system MUST record an identity access-history event when an
   authenticated session ends through expiry, revocation, or explicit sign-out.
-- **FR-022**: The public registration route MUST be available at `/register`,
+- **FR-023**: The public registration route MUST be available at `/register`,
   the public activation route MUST be available at `/activate`, the public
   login route MUST be available at `/sign-in`, and the authenticated cellar
   landing route MUST be available at `/cellars`.
-- **FR-023**: The feature MUST verify that public page rendering, registration,
+- **FR-024**: The feature MUST verify that public page rendering, registration,
   activation, login, and cellar-list loading meet the performance targets
   defined in the implementation plan.
 
@@ -182,8 +186,9 @@ page after the session expires without signing in again.
 
 - **SC-001**: 95% of first-time visitors in moderated testing can identify how
   to register or sign in from the start page without assistance.
-- **SC-002**: 95% of valid registration attempts result in an activation email
-  being issued within 1 minute.
+- **SC-002**: 95% of valid registration attempts result in an activation link
+  being generated and made available through the configured delivery mechanism
+  within 1 minute.
 - **SC-003**: 100% of activation links become unusable after 15 minutes and
   100% of valid activation attempts within that window activate the intended
   account.

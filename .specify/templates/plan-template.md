@@ -17,16 +17,16 @@
 -->
 
 **Backend Language/Version**: Java with Spring Boot 4  
-**Frontend Language/Version**: React Native with Vite  
-**Primary Dependencies**: Spring Boot 4, MongoDB 8, React Native, Tailwind CSS, Vite  
+**Frontend Language/Version**: React Native with Vite and Tailwind 4 
+**Primary Dependencies**: Spring Boot 4, MongoDB 8, React, Tailwind 4, Vite  
 **Storage**: MongoDB 8 document database  
 **Testing**: Backend, frontend, integration, and contract tests as relevant to the feature; all tests MUST pass after each phase before the next phase begins  
 **Target Platform**: Web application with Spring Boot backend and React Native frontend  
 **Project Type**: Full-stack application  
-**UI Design Source**: `docs/ui-inspiration/design-brief.md` is the required design reference for all user-facing work  
+**UI Design Source**: `design/design-system.json` is the required and only valid design reference for all user-facing work  
 **Data Modeling Source**: `docs/architecture/information-model.mmd` is the required source information model and MUST be translated into a MongoDB data model using document-database principles  
 **Performance Goals**: [Document measurable user-facing performance goals for this feature]  
-**Constraints**: Maintain alignment with the constitution, the UI design brief, and MongoDB-oriented document modeling principles  
+**Constraints**: Maintain alignment with the constitution, `design/design-system.json`, and MongoDB-oriented document modeling principles  
 **Scale/Scope**: Multi-user wine cellar application with shared cellar access and membership-based authorization
 
 ## Constitution Check
@@ -54,8 +54,8 @@
   feedback patterns.
 - Performance expectations are measurable whenever the feature has user-visible
   latency, throughput, or scale implications.
-- User-facing plans reference `docs/ui-inspiration/design-brief.md` and explain
-  how the feature stays consistent with it.
+- User-facing plans reference `design/design-system.json` and explain how the
+  feature stays consistent with it.
 - Data design references `docs/architecture/information-model.mmd` and explains
   how the information model is mapped into MongoDB documents, references, and
   aggregates without violating domain semantics.

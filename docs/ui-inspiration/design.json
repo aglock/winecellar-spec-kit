@@ -1,0 +1,417 @@
+{
+  "meta": {
+    "name": "Soft Editorial Travel UI",
+    "version": "1.0.0",
+    "source": "User-provided screenshot analyzed visually",
+    "purpose": "High-level design system guidance that helps an AI replicate the look and behavior of the reference UI across an app.",
+    "confidence_note": "All values are inferred from the screenshot and should be treated as stylistic targets rather than exact extracted tokens."
+  },
+  "creative_direction": {
+    "style_summary": "A polished, airy, premium consumer-product UI that blends Apple-like calm, travel-editorial imagery, and lightweight SaaS clarity.",
+    "mood": [
+      "clean",
+      "calm",
+      "optimistic",
+      "refined",
+      "approachable",
+      "lightweight"
+    ],
+    "keywords": [
+      "soft elevation",
+      "rounded geometry",
+      "blue-led neutrals",
+      "editorial cards",
+      "spacious composition",
+      "friendly minimalism"
+    ],
+    "overall_feel": "The interface should feel expensive but not flashy. Favor quiet confidence, strong whitespace, soft shadows, elegant rounded corners, and concise typography over decorative effects."
+  },
+  "design_principles": [
+    "Use spacious layouts with obvious breathing room between modules. The design relies on open canvas more than dense structure.",
+    "Build the interface from white cards floating on a very pale cool background. Surfaces should feel lifted, not heavy.",
+    "Let photography carry emotion while the UI remains restrained and neutral.",
+    "Use blue as the main action and selection color, supported by slate and cool gray neutrals.",
+    "Favor rounded rectangles, pill shapes, and circular icon buttons. Hard corners break the style.",
+    "Keep contrast high for titles and primary actions, but soften supporting text with muted gray-blue tones.",
+    "Prefer one strong visual idea per component: image, status, action, or data. Avoid stacking multiple accents in the same small area.",
+    "Use borders and shadows subtly. The UI should never feel outlined, noisy, or overly neumorphic."
+  ],
+  "foundations": {
+    "color": {
+      "palette": {
+        "primary": "#5568E8",
+        "primary_hover": "#465BD8",
+        "primary_soft": "#EEF1FF",
+        "ink": "#232949",
+        "text": "#39415F",
+        "text_muted": "#737B98",
+        "slate": "#68708F",
+        "slate_light": "#8D94B2",
+        "border": "#D8DCEA",
+        "border_soft": "#E8EBF4",
+        "canvas": "#F7F8FD",
+        "surface": "#FFFFFF",
+        "surface_tinted": "#F5F7FC",
+        "success": "#35B388",
+        "success_soft": "#EEF9F4",
+        "warning": "#C9A33D",
+        "warning_soft": "#FFF8E8",
+        "danger": "#E46D68",
+        "danger_soft": "#FFF1F0",
+        "rating": "#F7C948"
+      },
+      "usage": {
+        "backgrounds": "Default page background should be a cool off-white, never pure gray and rarely pure white.",
+        "surfaces": "Primary cards and inputs sit on white surfaces with soft borders or subtle shadows.",
+        "accent_strategy": "Reserve saturated blue for CTAs, selected states, focused states, calendar selection, and key links.",
+        "text_hierarchy": "Use ink for headlines, text for body copy, and muted slate-blue for metadata, placeholders, helper text, and icons.",
+        "feedback": "Status colors should be softened with pale tinted backgrounds and lightly colored outlines."
+      }
+    },
+    "typography": {
+      "font_family": {
+        "primary": "SF Pro Display, Inter, ui-sans-serif, system-ui, sans-serif",
+        "guidance": "Use a clean neo-grotesk sans with neutral proportions and slightly friendly curves. Avoid geometric or highly branded display fonts."
+      },
+      "weights": {
+        "regular": 400,
+        "medium": 500,
+        "semibold": 600,
+        "bold": 700
+      },
+      "scale": {
+        "display": {
+          "size": "40-48px",
+          "line_height": "1.05-1.1",
+          "weight": 700,
+          "usage": "Large hero or headline moments inside major cards."
+        },
+        "title_lg": {
+          "size": "32-36px",
+          "line_height": "1.1-1.2",
+          "weight": 700,
+          "usage": "Primary card titles such as property names."
+        },
+        "title_md": {
+          "size": "22-28px",
+          "line_height": "1.15-1.25",
+          "weight": 700,
+          "usage": "Section titles, article card titles, calendar month labels."
+        },
+        "body_lg": {
+          "size": "18-20px",
+          "line_height": "1.4-1.5",
+          "weight": 400,
+          "usage": "High-visibility descriptive copy or UI labels."
+        },
+        "body_md": {
+          "size": "16px",
+          "line_height": "1.45-1.55",
+          "weight": 400,
+          "usage": "Default body copy, menu items, input text."
+        },
+        "body_sm": {
+          "size": "14px",
+          "line_height": "1.4-1.5",
+          "weight": 400,
+          "usage": "Metadata, helper text, dates, status detail."
+        },
+        "label": {
+          "size": "13-14px",
+          "line_height": "1.3-1.4",
+          "weight": 500,
+          "usage": "Small labels above controls and compact UI captions."
+        }
+      },
+      "rules": [
+        "Titles are bold and compact, with dark ink color and minimal letter-spacing.",
+        "Body text is soft and readable, never too dark unless it is interactive or essential.",
+        "Avoid all caps. Use title case or sentence case throughout.",
+        "Links should use the primary blue without becoming the loudest element in the component."
+      ]
+    },
+    "spacing": {
+      "base_unit": 4,
+      "scale": {
+        "xs": 4,
+        "sm": 8,
+        "md": 12,
+        "lg": 16,
+        "xl": 20,
+        "2xl": 24,
+        "3xl": 32,
+        "4xl": 40,
+        "5xl": 48
+      },
+      "guidance": [
+        "Use generous external spacing and moderate internal padding.",
+        "Cards should usually have 24-32px padding.",
+        "Tight controls can use 12-16px padding, but avoid cramped text and icon placement.",
+        "Prefer consistent optical spacing over strict mathematical compression."
+      ]
+    },
+    "radius": {
+      "input": "12-14px",
+      "button": "12-14px",
+      "pill": "999px",
+      "card": "24-28px",
+      "image": "Match the card radius at exposed corners",
+      "circle": "Perfect circle for icon buttons, avatars, and selection controls"
+    },
+    "border": {
+      "width": "1px",
+      "default_color": "#D8DCEA",
+      "soft_color": "#E8EBF4",
+      "focus_treatment": "Prefer a faint primary-tinted outline or shadow glow rather than a hard browser-style ring."
+    },
+    "shadow": {
+      "card": "0 18px 45px -24px rgba(35, 41, 73, 0.22)",
+      "card_soft": "0 10px 30px -20px rgba(35, 41, 73, 0.16)",
+      "button": "0 10px 20px -14px rgba(85, 104, 232, 0.45)",
+      "floating_control": "0 12px 24px -18px rgba(35, 41, 73, 0.25)",
+      "guidance": "Shadows should be broad, diffused, and quiet. Avoid sharp drop shadows or multiple stacked shadow layers."
+    },
+    "iconography": {
+      "style": "Use simple monoline icons with rounded terminals and consistent stroke weight.",
+      "stroke_weight": "1.75-2px",
+      "color": "Muted slate for default icons, primary blue for selected states, semantic colors for feedback icons.",
+      "guidance": "Icons should support the layout rather than lead it. Keep them simple, centered, and slightly oversized in spacious controls."
+    },
+    "imagery": {
+      "art_direction": "Use bright, atmospheric photography with cool daylight, clear subject matter, and soft contrast.",
+      "cropping": "Prefer full-bleed crops with a calm focal point and enough negative space for overlays when needed.",
+      "tone": "Images should feel aspirational and serene rather than gritty or oversaturated."
+    },
+    "motion": {
+      "style": "Subtle and refined",
+      "duration": "160-240ms for most interactions",
+      "easing": "ease-out or gentle cubic-bezier easing",
+      "guidance": [
+        "Use fade, lift, and small scale changes rather than dramatic movement.",
+        "Dropdowns and cards should appear softly, as if floating up into place.",
+        "Hover states should brighten or tint slightly instead of shifting aggressively."
+      ]
+    }
+  },
+  "layout": {
+    "composition": {
+      "approach": "Asymmetrical modular layout on a large canvas",
+      "guidance": [
+        "Arrange UI in clearly separated columns or islands rather than edge-to-edge sections.",
+        "Leave substantial whitespace between major modules so each component reads like a standalone specimen.",
+        "Keep vertical rhythm calm and consistent, with repeated offsets and aligned card tops where possible."
+      ]
+    },
+    "surface_behavior": {
+      "default": "Most components live on white cards or inputs above the cool page background.",
+      "elevation": "Differentiate layers using softness, not heavy contrast.",
+      "density": "This is a low-density UI. Avoid compact enterprise spacing."
+    },
+    "alignment": {
+      "rule": "Text and controls should align to clear internal columns, usually left-aligned.",
+      "optics": "Use optical alignment with icons and circular elements so they feel centered rather than mechanically placed."
+    }
+  },
+  "components": {
+    "buttons": {
+      "primary_button": {
+        "look": "Filled with primary blue, white label, medium-to-bold weight, rounded rectangle with soft shadow.",
+        "size": "48-56px height",
+        "padding": "16-24px horizontal",
+        "usage": "Main positive action on a card or form.",
+        "states": {
+          "default": "Strong blue fill with subtle depth.",
+          "hover": "Slightly darker blue and slightly brighter shadow.",
+          "active": "Reduce lift; keep color saturated.",
+          "disabled": "Desaturate into pale slate-blue with reduced contrast."
+        }
+      },
+      "icon_circle_button": {
+        "look": "White circular button with soft shadow and muted slate icon.",
+        "size": "44-52px",
+        "usage": "Image overlays, pagination navigation, lightweight utility actions.",
+        "rule": "Keep icon centered and leave visible breathing room around it."
+      },
+      "text_button_or_link": {
+        "look": "Minimal text treatment in primary blue or ink.",
+        "usage": "Inline supporting action such as reviews link.",
+        "rule": "Do not style inline links like heavy buttons."
+      }
+    },
+    "inputs": {
+      "text_field": {
+        "look": "White input with rounded corners, 1px cool border, generous horizontal padding, and muted icon support.",
+        "size": "48-54px height",
+        "text_style": "16px regular text with muted placeholder.",
+        "states": {
+          "default": "Subtle border and white fill.",
+          "hover": "Slightly darken border.",
+          "focus": "Primary-tinted border or glow, not a hard outline.",
+          "filled": "Text becomes ink while icons remain muted."
+        }
+      },
+      "search_field": {
+        "look": "A standard text field with a leading search icon and optional trailing clear icon.",
+        "rule": "Maintain symmetrical icon spacing and do not shrink the field below comfortable touch size."
+      },
+      "select_field": {
+        "look": "Visually identical to text input until expanded.",
+        "rule": "Use label, helper text, and dropdown surface to communicate selection complexity."
+      },
+      "dropdown_menu": {
+        "look": "Floating white panel with rounded corners, soft shadow, and stacked options.",
+        "padding": "8px outer padding, 14-18px option padding",
+        "option_behavior": "Hover and selected rows use pale tinted backgrounds, never dark highlight blocks.",
+        "separation": "Use whitespace or faint dividers rather than high-contrast rules."
+      }
+    },
+    "chips_and_tags": {
+      "tag_chip": {
+        "look": "Small pill with pale surface tint, thin border, muted text, and compact horizontal padding.",
+        "size": "28-34px height",
+        "usage": "Categories and lightweight filters.",
+        "rule": "Tags should look gentle and secondary, not like primary CTAs."
+      },
+      "status_pill": {
+        "look": "Semantic text and icon inside an outline or faintly tinted pill.",
+        "size": "30-36px height",
+        "usage": "Approved, pending, rejected, or similar lightweight status labels.",
+        "rule": "Use color economically. The pill background should be very light."
+      }
+    },
+    "selection_controls": {
+      "radio": {
+        "look": "Large circular control with thin cool-gray stroke and generous inner spacing.",
+        "size": "26-30px",
+        "selected_state": "Fill or dot should be precise and centered, using primary blue."
+      },
+      "checkbox": {
+        "look": "Rounded square with primary blue fill when selected and white checkmark.",
+        "size": "26-30px",
+        "rule": "Unchecked state should stay light and outlined."
+      },
+      "switch": {
+        "look": "Slim rounded track with circular thumb and cool-gray outline.",
+        "size": "Approximately 44px by 26px",
+        "off_state": "White or tinted track with muted border.",
+        "on_state": "Primary-led track or primary-accent thumb depending on system choice.",
+        "rule": "Keep the switch visually calm; do not make it glossy or oversized."
+      }
+    },
+    "avatars": {
+      "avatar": {
+        "look": "Circular photo crop, slightly larger than typical dense UI avatars.",
+        "size": "44-52px",
+        "rule": "Use a white ring when avatars overlap or sit on image-heavy backgrounds."
+      },
+      "avatar_group": {
+        "look": "Horizontally overlapping avatar stack with 10-14px overlap.",
+        "usage": "Social proof, collaborators, authors, reviewers.",
+        "rule": "Keep overlap tight enough to feel connected but loose enough that each portrait remains identifiable."
+      }
+    },
+    "cards": {
+      "hero_property_card": {
+        "look": "Large editorial card with full-bleed image top, bold title, metadata, rating row, amenity icons, description, and pricing footer.",
+        "surface": "White card with soft elevation and large radius.",
+        "image_treatment": "Wide scenic image with matching rounded top corners and overlay controls.",
+        "content_structure": [
+          "Image zone with circular back button and small pagination chip.",
+          "Title and location metadata.",
+          "Rating summary with stars and review link.",
+          "Amenity row with line icons and text labels.",
+          "Body copy with comfortable line spacing.",
+          "Footer with primary CTA on the left and bold price on the right."
+        ],
+        "rule": "This card is the showcase element. Let it be visually dominant and more spacious than standard cards."
+      },
+      "editorial_article_card": {
+        "look": "Medium-sized card with image header, bold headline, short teaser, and author row.",
+        "surface": "White, soft shadow, 24px padding in text area.",
+        "tone": "Feels like a premium magazine tile, not a corporate dashboard widget."
+      },
+      "utility_menu_card": {
+        "look": "Vertical list card with icon-led rows, faint row separators or alternating hover treatment, and rounded container.",
+        "rows": "Profile, settings, integrations, theme toggle, sign out, or similar utilities.",
+        "rule": "Rows should be generous, calm, and clearly tappable."
+      },
+      "calendar_card": {
+        "look": "Large white card with centered month heading, arrow controls, airy date grid, and one strong selected day.",
+        "rule": "The calendar must feel light and breathable. Empty space is part of the design."
+      },
+      "feedback_banner": {
+        "look": "Horizontal alert card with very light semantic tint, subtle border, left accent line, leading icon, and trailing dismiss action.",
+        "rule": "Keep feedback surfaces reassuring and soft rather than urgent unless the message is truly critical."
+      }
+    },
+    "menus_and_lists": {
+      "list_item": {
+        "look": "Single-line or two-line row with icon left, label center, optional badge or control right.",
+        "padding": "14-18px vertical, 18-20px horizontal",
+        "interaction": "Use pale hover tint and smooth background fade."
+      },
+      "badge": {
+        "look": "Small circular red count badge with white text.",
+        "size": "20-24px",
+        "rule": "Use sparingly as a point accent inside otherwise neutral components."
+      }
+    },
+    "feedback": {
+      "inline_alert": {
+        "look": "A soft semantic banner with icon, bold short title, optional supporting text, and dismiss icon.",
+        "hierarchy": "The title should be slightly darker or bolder than the supporting line.",
+        "semantic_style": "Success, warning, and danger should all use pale tinted backgrounds and restrained outlines."
+      },
+      "toast_or_notice": {
+        "look": "If used elsewhere, follow the same soft semantic treatment as inline alerts, with rounded corners and minimal noise."
+      }
+    },
+    "rating": {
+      "stars": {
+        "look": "Warm yellow stars paired with dark numeric rating and blue review link.",
+        "rule": "The stars are cheerful but still restrained. Do not make them overly glossy or cartoonish."
+      }
+    },
+    "calendar": {
+      "header": {
+        "look": "Centered bold month label with left and right chevrons placed near the card edges.",
+        "rule": "Use generous top padding and preserve wide spacing around controls."
+      },
+      "weekday_row": {
+        "look": "Muted small labels with even horizontal spacing.",
+        "rule": "Do not overemphasize weekdays."
+      },
+      "date_cell": {
+        "look": "Simple centered number inside an invisible cell until active.",
+        "selected_state": "Filled primary rounded square or soft rounded tile with white text.",
+        "current_day_hint": "Use a small blue dot or subtle cue instead of a heavy ring."
+      }
+    }
+  },
+  "system_rules_for_unseen_components": {
+    "tables": "If the app needs tables, render them as card-contained, low-density data views with generous row height, soft dividers, and strong typographic hierarchy rather than grid-heavy enterprise tables.",
+    "modals": "Use large-radius white panels on dimmed cool overlays. Keep headers minimal and actions obvious.",
+    "tabs": "Prefer understated segmented controls or pill tabs with primary selection and pale inactive surfaces.",
+    "navigation": "Use icon-led, low-noise navigation with clear active states in blue and a lot of whitespace.",
+    "charts": "Use calm, minimal charts with blue-led accents, light grid lines, and rounded tooltip surfaces."
+  },
+  "do_not_do": [
+    "Do not use dark mode aesthetics, glassmorphism, or neon accents as defaults for this system.",
+    "Do not compress spacing to fit more content. The visual identity depends on roominess.",
+    "Do not use harsh black text, heavy borders, or sharp corners.",
+    "Do not mix multiple saturated accent colors into a single component without a semantic reason.",
+    "Do not make cards feel flat and border-boxed; they should feel softly elevated.",
+    "Do not over-animate. Motion should support polish, not announce itself."
+  ],
+  "ai_replication_instructions": {
+    "core_prompt": "Design the interface as a premium light-theme system made of rounded white cards on a cool off-white canvas, using bold dark navy headlines, muted slate secondary text, soft blue primary actions, airy spacing, subtle borders, diffused shadows, and serene editorial photography.",
+    "component_prompt": "When inventing new components, keep the same low-density spacing, 12-28px radii, soft blue-gray palette, monoline icons, gentle semantic tints, and card-first composition. New elements should feel like they belong next to a modern travel, lifestyle, or premium SaaS UI.",
+    "layout_prompt": "Favor asymmetrical modular compositions with large gaps between islands of content. Each major element should feel individually framed and easy to scan.",
+    "quality_bar": [
+      "Elegant before clever",
+      "Soft before loud",
+      "Readable before decorative",
+      "Editorial before utilitarian"
+    ]
+  }
+}

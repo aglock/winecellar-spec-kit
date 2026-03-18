@@ -1,0 +1,259 @@
+openapi: 3.1.0
+info:
+  title: Winecellar Auth And Cellars API
+  version: 0.1.0
+  description: Contract for landing-auth-cellars foundation endpoints.
+servers:
+  - url: http://localhost:8080
+tags:
+  - name: Auth
+  - name: Cellars
+paths:
+  /api/auth/register:
+    post:
+      tags: [Auth]
+      summary: Register a pending account and generate an activation link
+      operationId: registerAccount
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+      responses:
+        '202':
+          description: Registration accepted and activation delivery requested
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegisterResponse'
+        '409':
+          description: Email already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/auth/activate:
+    post:
+      tags: [Auth]
+      summary: Activate an account using a single-use token
+      operationId: activateAccount
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ActivateRequest'
+      responses:
+        '200':
+          description: Account activated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActivateResponse'
+        '400':
+          description: Invalid, expired, or already-used token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/auth/sign-in:
+    post:
+      tags: [Auth]
+      summary: Sign in an active user and create a 12-hour session
+      operationId: signIn
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignInRequest'
+      responses:
+        '200':
+          description: Signed in
+          headers:
+            Set-Cookie:
+              description: HTTP-only session cookie
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionResponse'
+        '401':
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Account not active
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/auth/sign-out:
+    post:
+      tags: [Auth]
+      summary: End the current authenticated session
+      operationId: signOut
+      security:
+        - sessionCookie: []
+      responses:
+        '204':
+          description: Signed out
+        '401':
+          description: No active session
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/auth/session:
+    get:
+      tags: [Auth]
+      summary: Get the current session and signed-in user
+      operationId: getSession
+      security:
+        - sessionCookie: []
+      responses:
+        '200':
+          description: Active session
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionResponse'
+        '401':
+          description: Session missing or expired
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/cellars:
+    get:
+      tags: [Cellars]
+      summary: List cellars accessible through membership
+      operationId: listCellars
+      security:
+        - sessionCookie: []
+      responses:
+        '200':
+          description: Accessible cellar summaries
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [items]
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CellarSummary'
+        '401':
+          description: Session missing or expired
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  securitySchemes:
+    sessionCookie:
+      type: apiKey
+      in: cookie
+      name: WC_SESSION
+  schemas:
+    RegisterRequest:
+      type: object
+      required: [email, password, displayName]
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          minLength: 12
+        displayName:
+          type: string
+          minLength: 1
+          maxLength: 80
+    RegisterResponse:
+      type: object
+      required: [status, activationExpiresAt]
+      properties:
+        status:
+          type: string
+          const: PENDING_ACTIVATION
+        activationExpiresAt:
+          type: string
+          format: date-time
+    ActivateRequest:
+      type: object
+      required: [token]
+      properties:
+        token:
+          type: string
+          minLength: 20
+    ActivateResponse:
+      type: object
+      required: [status]
+      properties:
+        status:
+          type: string
+          const: ACTIVE
+    SignInRequest:
+      type: object
+      required: [email, password]
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+    SessionResponse:
+      type: object
+      required: [user, expiresAt]
+      properties:
+        user:
+          $ref: '#/components/schemas/SessionUser'
+        expiresAt:
+          type: string
+          format: date-time
+    SessionUser:
+      type: object
+      required: [id, email, displayName]
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+          format: email
+        displayName:
+          type: string
+    CellarSummary:
+      type: object
+      required: [cellarId, name, memberRole]
+      properties:
+        cellarId:
+          type: string
+        name:
+          type: string
+        location:
+          type: string
+        description:
+          type: string
+        memberRole:
+          type: string
+          enum: [OWNER, CONTRIBUTOR, VIEWER]
+        bottleCount:
+          type: integer
+          minimum: 0
+        recentActivityAt:
+          type: string
+          format: date-time
+    ErrorResponse:
+      type: object
+      required: [code, message]
+      properties:
+        code:
+          type: string
+        message:
+          type: string

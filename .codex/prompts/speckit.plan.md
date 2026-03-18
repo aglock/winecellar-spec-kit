@@ -26,6 +26,9 @@ You **MUST** consider the user input before proceeding (if not empty).
 
 3. **Execute plan workflow**: Follow the structure in IMPL_PLAN template to:
    - Fill Technical Context (mark unknowns as "NEEDS CLARIFICATION")
+   - For all user-facing work, treat `/workspaces/winecellar-spec-kit/design/design-system.json` as the only valid UI design guidance
+   - Remove or replace any inherited references to `docs/ui-inspiration/*`; those documents are obsolete and MUST NOT be cited in the generated plan
+   - Require unit tests for all business functionality in every implementation phase; plans MUST treat missing business-logic unit coverage as incomplete work
    - Fill Constitution Check section from constitution
    - Evaluate gates (ERROR if violations unjustified)
    - Phase 0: Generate research.md (resolve all NEEDS CLARIFICATION)
@@ -88,3 +91,5 @@ You **MUST** consider the user input before proceeding (if not empty).
 
 - Use absolute paths
 - ERROR on gate failures or unresolved clarifications
+- When the plan references UI guidance, cite only `/workspaces/winecellar-spec-kit/design/design-system.json`
+- Plans MUST require unit tests for all business functionality in every implementation phase

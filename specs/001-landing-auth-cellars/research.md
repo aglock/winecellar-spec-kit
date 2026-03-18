@@ -1,108 +1,160 @@
 # Research: Landing, Registration, Login, and Cellars
 
-## Decision: Treat the frontend as React Native for Web delivered through Vite
+## Decision: Separate backend and frontend applications orchestrated by Docker Compose
 
-**Rationale**: The product target in the spec and sitemap is a web application,
-while the provided frontend stack says React Native with Vite. React Native for
-Web is the most coherent way to satisfy both constraints without changing the
-requested stack.
-
-**Alternatives considered**:
-
-- Plain React web components: rejected because it ignores the stated React
-  Native requirement.
-- Expo-native mobile application: rejected because the current feature scope,
-  sitemap, and design brief are web-first.
-
-## Decision: Use separate MongoDB collections for accounts, activation records, sessions, cellars, and memberships
-
-**Rationale**: These concepts have different lifecycles, write patterns, and
-authorization responsibilities. Keeping them as separate aggregates preserves
-domain boundaries and avoids over-embedding data that changes independently.
+**Rationale**: The feature requires a Spring Boot API, a React web client, a
+MongoDB instance, and local email capture. Separate applications keep build
+pipelines, test suites, and container images simple while still allowing one
+command local startup through `docker compose up --build`.
 
 **Alternatives considered**:
 
-- Embedding memberships directly inside cellar documents: rejected for now
-  because membership is queried by user and changes independently from cellar
-  summary data.
-- Embedding sessions directly inside user documents: rejected because session
-  creation and expiry are write-heavy and benefit from isolated lifecycle
-  management.
+- Monolithic Spring Boot app serving built frontend assets: rejected because it
+  slows frontend iteration and couples deployment concerns too early.
+- Frontend-only mock implementation: rejected because registration, activation,
+  session expiry, and cellar authorization are backend behaviors.
 
-## Decision: Model activation as a single-use record with explicit expiry
+## Decision: Use MongoDB collections aligned to aggregate boundaries instead of one denormalized auth document
 
-**Rationale**: The feature requires a 15-minute activation link and single-use
-semantics. A dedicated activation record keeps token lifecycle, expiry, and use
-status explicit and auditable.
-
-**Alternatives considered**:
-
-- Storing activation state only on the user account: rejected because it does
-  not model token issuance and invalidation cleanly.
-- Reusing session storage for activation links: rejected because activation and
-  authentication are separate domain concerns.
-
-## Decision: Use a 12-hour server-validated authenticated session
-
-**Rationale**: The feature requires an exact session duration. A server-side
-session record with explicit expiry keeps validity and revocation behavior
-traceable and consistent across protected routes.
+**Rationale**: Registration, activation tokens, sessions, memberships, and
+  cellar summaries change at different rates and need different indexes and TTL
+  behavior. Separate collections allow explicit lifecycle rules, especially for
+  activation expiry and session expiry, without collapsing identity and cellar
+  concerns.
 
 **Alternatives considered**:
 
-- Long-lived stateless tokens only: rejected because explicit session lifecycle
-  control is clearer for the required duration-based behavior.
-- Indefinite sessions until manual sign-out: rejected because it conflicts with
-  the feature requirement.
+- Single `users` document embedding activation token and active sessions:
+  rejected because token lifecycle and session cleanup become harder to index and
+  expire cleanly.
+- Fully relational modeling in MongoDB-style references for every read:
+  rejected because cellar list responses benefit from small denormalized summary
+  fields on memberships.
 
-## Decision: Expose minimal contracts for registration, activation, login, session inspection, and cellar listing
+## Decision: Persist activation tokens with issued-at, expires-at, and consumed-at fields
 
-**Rationale**: This feature needs only the public auth entry points and the
-authenticated cellar-list view. Keeping the contract small reduces accidental
-scope creep while making testing straightforward.
-
-**Alternatives considered**:
-
-- Adding cellar creation and invitation APIs now: rejected because they are out
-  of scope for the first feature slice.
-- Using frontend-only mocks as the primary contract: rejected because backend
-  auth and protected access are core feature requirements.
-
-## Decision: Keep the cellars page focused on accessible cellar summaries and empty state
-
-**Rationale**: The feature establishes authenticated entry into the cellar area,
-not cellar management. The page should support users who already have
-memberships and users who have none, without introducing create/share flows yet.
+**Rationale**: Single-use activation links with a 15-minute validity window need
+explicit validation for both time expiry and replay prevention. Keeping
+`consumedAt` separate from deletion preserves auditability and allows clearer
+user feedback for expired versus already-used links.
 
 **Alternatives considered**:
 
-- Folding cellar creation into this feature: rejected because the current spec
-  bounds the first slice to fundamentals only.
-- Requiring at least one cellar to complete registration: rejected because
-  shared-cellar access may come later through invitation or owner workflows.
+- Delete token immediately on successful activation: rejected because it loses
+  traceable evidence of token use.
+- Store only a boolean `used`: rejected because it does not capture when the
+  activation was consumed.
 
-## Decision: Apply the UI design brief as a tone and layout system, not as a literal single-page inventory clone
+## Decision: Persist authenticated sessions server-side in MongoDB with 12-hour expiry
 
-**Rationale**: The design brief describes a premium dashboard shell and
-consistent interaction language. The landing, registration, login, and cellars
-pages should reuse that calm, structured, collector-oriented visual system while
-adapting it to public/auth flows.
-
-**Alternatives considered**:
-
-- Using unrelated auth screens with a different visual system: rejected because
-  it would violate UX consistency.
-- Reproducing the inventory view layout unchanged on every page: rejected
-  because public and auth flows need different information hierarchy.
-
-## Decision: Require automated coverage across backend, frontend, contract, and end-to-end flows
-
-**Rationale**: The constitution requires testing standards, and this feature
-introduces authentication, expiry windows, protected routes, and role-aware
-cellar access entry points. These behaviors are regression-prone and need
-explicit coverage.
+**Rationale**: The feature requires deterministic 12-hour session enforcement
+and server-side invalidation on sign-out or revocation. MongoDB-backed sessions
+allow explicit expiry checks, audit correlation, and Compose-friendly local
+development without external session infrastructure.
 
 **Alternatives considered**:
 
-- Manual testing only: rejected because time-based auth rules and protected
-  access behavior need repeatable verification.
+- Stateless JWT-only auth: rejected because explicit sign-out and expiry-event
+  recording become harder without server-side session state.
+- In-memory sessions: rejected because they break in container restarts and do
+  not represent production behavior.
+
+## Decision: Use HTTP-only secure cookies for the web session transport
+
+**Rationale**: The frontend is a browser-based React app. HTTP-only cookies keep
+session secrets out of JavaScript while still allowing the frontend to discover
+auth state via a dedicated session endpoint.
+
+**Alternatives considered**:
+
+- Local storage bearer tokens: rejected because they increase XSS exposure.
+- Basic auth for initial implementation: rejected because it does not represent
+  the intended product login flow.
+
+## Decision: Mirror the `frontend-template` route shell and component layering in a new `/frontend` app
+
+**Rationale**: The template already demonstrates the desired route-first shape
+for landing, sign-in, and cellars pages. Reusing that structure reduces design
+drift while still allowing a proper TypeScript setup, Tailwind 4 syntax, and
+design-token implementation from `design/design-system.json`.
+
+**Alternatives considered**:
+
+- Copy the template verbatim: rejected because it is JavaScript, uses Tailwind
+  3-era setup, and contains demo-only behavior and routes.
+- Build an unrelated folder structure: rejected because the user explicitly
+  asked to mimic the template in a dedicated `frontend` folder.
+
+## Decision: Translate the design system into frontend tokens and a small shared component set
+
+**Rationale**: The design system defines colors, typography, spacing, motion,
+page templates, and component states. Converting those rules into Tailwind 4
+theme tokens plus shared `Button`, `Input`, `Card`, `AuthShell`, and
+`AppHeader` components is the cleanest way to keep landing, auth, and cellar
+pages visually consistent.
+
+**Alternatives considered**:
+
+- Styling each page independently: rejected because it would break consistency.
+- Using `docs/ui-inspiration/*`: rejected because the planning prompt forbids
+  those obsolete references.
+
+## Decision: Design email delivery around a provider port, but log activation links in early iterations
+
+**Rationale**: The long-term provider target is Brevo, but the first iterations
+should stay operational without external email infrastructure. A dedicated
+activation-delivery port allows iteration 1 to log activation links to the
+application log while preserving a clean seam for a later `BrevoActivationDelivery`
+adapter.
+
+**Alternatives considered**:
+
+- Adding Brevo immediately: rejected because it introduces external setup and
+  credential management before the auth flow itself is proven.
+- Mailpit in Docker Compose: rejected for the first iterations because the user
+  prefers log-based activation delivery before introducing even local email
+  infrastructure.
+- Hard-coding log delivery without an abstraction: rejected because it would
+  create avoidable rework when Brevo is introduced.
+
+## Decision: Treat business-logic unit tests as mandatory deliverables in every implementation phase
+
+**Rationale**: Registration, activation, session handling, route protection,
+and cellar authorization are core business behavior. Requiring unit tests in
+every implementation phase keeps those rules explicit and prevents "we will add
+tests later" drift.
+
+**Alternatives considered**:
+
+- Integration tests only: rejected because they do not isolate business rules
+  well enough and make regressions harder to localize.
+- Adding unit tests at the end: rejected because gaps compound across phases.
+
+## Decision: Return cellar list entries from a membership-centric read model
+
+**Rationale**: The `/cellars` page only needs the cellars accessible to the
+current user. Querying memberships by `userId` and resolving the corresponding
+cellar summary minimizes authorization mistakes and keeps the read path aligned
+with the constitution's cellar-level access model.
+
+**Alternatives considered**:
+
+- Querying all cellars then filtering client-side: rejected because it is a
+  security anti-pattern.
+- Returning full cellar documents: rejected because the page currently needs
+  only summary data.
+
+## Decision: Treat identity audit events as a temporary constitutional exception
+
+**Rationale**: The feature spec requires registration and sign-in audit history
+before cellar context exists. The current constitution restricts primary event
+targets to `BOTTLE`, `COMPARTMENT`, or `CELLAR`, so this feature needs an
+approved exception or a constitution amendment to support `USER_ACCOUNT` as the
+primary target for identity events.
+
+**Alternatives considered**:
+
+- Skip identity events until the user owns a cellar: rejected because it fails
+  the feature requirements.
+- Force identity events into a fake cellar context: rejected because it would
+  distort the domain model.

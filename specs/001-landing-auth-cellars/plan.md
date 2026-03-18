@@ -1,66 +1,71 @@
 # Implementation Plan: Landing, Registration, Login, and Cellars
 
-**Branch**: `001-landing-auth-cellars` | **Date**: 2026-03-15 | **Spec**: [/workspaces/winecellar-spec-kit/specs/001-landing-auth-cellars/spec.md](/workspaces/winecellar-spec-kit/specs/001-landing-auth-cellars/spec.md)
-**Input**: Feature specification from `/specs/001-landing-auth-cellars/spec.md`
-
-**Note**: This plan implements the first public and authenticated application
-surface for the wine cellar platform: public landing, registration and
-activation, login, and the authenticated cellars landing page.
+**Branch**: `001-landing-auth-cellars` | **Date**: 2026-03-17 | **Spec**: `/workspaces/winecellar-spec-kit/specs/001-landing-auth-cellars/spec.md`
+**Input**: Feature specification from `/workspaces/winecellar-spec-kit/specs/001-landing-auth-cellars/spec.md`
 
 ## Summary
 
-Build the first end-to-end user access slice for the wine cellar application:
-a public landing page, registration with 15-minute email activation, login with
-a 12-hour session, and an authenticated cellars page with empty-state handling.
-The backend will expose auth and cellar-summary interfaces on Spring Boot 4 with
-MongoDB 8, while the frontend will implement the sitemap-aligned public and
-authenticated pages using React Native for Web with Vite and Tailwind-driven
-styling guided by `docs/ui-inspiration/design-brief.md`. This slice also
-includes explicit identity access-history events for registration, activation,
-sign-in outcomes, and session end states.
+Deliver a Docker Compose based full-stack foundation for public landing,
+registration, activation, sign-in, and authenticated cellar listing. The
+backend will use Spring Boot 4 with MongoDB 8 for identity, activation,
+session, cellar membership lookup, and audit events; the frontend will be a new
+React + Vite + Tailwind 4 application in `/frontend` that mirrors the routing
+and presentation patterns of `/frontend-template` while translating them into
+the visual language defined by `/workspaces/winecellar-spec-kit/design/design-system.json`.
+Email delivery will be designed behind an adapter so Brevo can be adopted
+cleanly later, while early iterations only log activation links in the backend
+application log.
 
 ## Technical Context
 
-**Language/Version**: Java for backend services; TypeScript for frontend application  
-**Backend Language/Version**: Java with Spring Boot 4  
-**Frontend Language/Version**: React Native for Web with Vite  
-**Primary Dependencies**: Spring Boot 4, Spring Data MongoDB, Spring Security, MongoDB 8, React Native, React Native Web, Tailwind CSS, Vite  
-**Storage**: MongoDB 8 document database  
-**Testing**: JUnit-based backend tests, Spring integration tests, frontend component and route tests, API contract tests, and end-to-end flow tests for auth and cellar access; all tests MUST pass after each phase before the next phase begins  
-**Target Platform**: Web application with Spring Boot backend and React Native Web frontend  
-**Project Type**: Full-stack application  
-**UI Design Source**: `docs/ui-inspiration/design-brief.md` is the required design reference for all user-facing work  
-**Data Modeling Source**: `docs/architecture/information-model.mmd` is the required source information model and MUST be translated into a MongoDB data model using document-database principles  
-**Performance Goals**: Public pages render interactively in under 2 seconds on standard broadband connections; registration, activation, login, and cellar-list responses complete within 1 second for typical single-user interactions; the cellars page loads its initial authenticated content in under 2 seconds for users with up to 50 cellar memberships  
-**Constraints**: Maintain alignment with the constitution, the UI design brief, and MongoDB-oriented document modeling principles; preserve cellar-level authorization semantics; keep code human-readable and maintainable  
-**Scale/Scope**: Multi-user wine cellar application with shared cellar access and membership-based authorization; this feature covers public entry and authenticated cellar landing only
+**Language/Version**: Java 21 for the backend; TypeScript 5.x for the frontend  
+**Backend Language/Version**: Java 21 with Spring Boot 4  
+**Frontend Language/Version**: TypeScript 5.x with React 19, Vite 7, Tailwind CSS 4  
+**Primary Dependencies**: Spring Boot Web, Spring Security, Spring Data MongoDB, Bean Validation, MongoDB 8, React Router, Tailwind CSS 4  
+**Storage**: MongoDB 8 document database with dedicated collections for user accounts, activation tokens, sessions, memberships, cellars, and identity access events  
+**Testing**: Unit tests are mandatory for all business functionality in every implementation phase; use JUnit 5 for backend domain/application logic, Spring Boot integration tests, Mongo-backed repository tests, contract validation for OpenAPI, Vitest + React Testing Library for frontend logic/components, ESLint, and `docker compose config` validation  
+**Target Platform**: Web application delivered as separate backend and frontend services behind Docker Compose  
+**Project Type**: Full-stack application with isolated `backend/` and `frontend/` workspaces  
+**UI Design Source**: `/workspaces/winecellar-spec-kit/design/design-system.json` is the required and only valid design reference for all user-facing work  
+**Data Modeling Source**: `/workspaces/winecellar-spec-kit/docs/architecture/information-model.mmd` is the required source information model and MUST be translated into a MongoDB data model using document-database principles  
+**Performance Goals**: Public pages render first meaningful content in under 2.0s p75 on broadband; auth API endpoints respond in under 300ms p95 excluding delivery I/O; cellar list API responds in under 400ms p95 for users with up to 50 memberships; activation link generation and delivery logging complete within 60s p95 of successful registration  
+**Constraints**: Keep identity/access separate from cellar domain records; reuse sitemap terminology and routes; frontend must mimic `/frontend-template` route structure and component composition patterns without copying its obsolete Tailwind 3 setup; Docker Compose must run the full local stack; activation delivery must use a replaceable port so Brevo can be added later while iteration 1 logs activation links locally  
+**Scale/Scope**: Initial multi-user foundation for public acquisition and authenticated cellar access, sized for low-to-medium volume beta usage and later extension to selected-cellar workflows
 
 ## Constitution Check
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-- PASS: Information model remains explicit before storage design. This plan
-  keeps identity/access, cellar membership, cellar summary, activation, and
-  session concepts separate.
-- PASS: Cellar collaboration remains cellar-level through membership; no
-  bottle-level or compartment-level permissions are introduced.
-- PASS: Domain boundaries stay separate between identity/access, cellar
-  structure, wine master data, bottle inventory, and event history. This feature
-  touches only identity/access and cellar summary listing.
-- PASS: Canonical geography concepts are unaffected by this feature.
-- PASS: Event history remains first-class. Account registration, activation,
-  sign-in, and sign-out/session expiry are implemented within the identity and
-  access domain, produce explicit access-history records, and remain distinct
-  from cellar inventory state.
-- PASS: Nullable relationships are limited and justified in the data model.
-- PASS: Code quality, testing, UX consistency, and performance expectations are
-  explicit in this plan.
-- PASS: User-facing work is constrained by `docs/ui-inspiration/design-brief.md`
-  for navigation, layout tone, and interaction consistency.
-- PASS: Data design maps the information model into MongoDB documents using
-  aggregate-oriented boundaries without collapsing domain concepts.
-- PASS: Each phase below defines test gates and requires a successful test run
-  before moving to the next phase.
+- Information model defined before storage/schema decisions; semantic entities
+  and cardinalities are explicit in `data-model.md`.
+- Cellar collaboration remains modeled through `CELLAR_MEMBERSHIP`; this
+  feature only reads membership to determine cellar visibility.
+- Domain boundaries remain separate: identity/access (`USER_ACCOUNT`,
+  `ACCOUNT_ACTIVATION`, `AUTHENTICATED_SESSION`), cellar access
+  (`CELLAR_MEMBERSHIP`, `CELLAR`), and audit history (`IDENTITY_ACCESS_EVENT`).
+- Canonical geography is unchanged by this feature; no new geography fields are
+  introduced.
+- `docs/resources/grapes-masterlist.json` is unaffected because the feature does
+  not modify wine or grape concepts.
+- State-changing actions define event history for registration, activation,
+  sign-in, sign-out, and session expiry.
+- Nullable relationships are explicitly justified in `data-model.md`.
+- Code structure is planned around clear backend modules and frontend feature
+  folders, favoring readability over indirection.
+- Automated test strategy covers registration, activation expiry/reuse, sign-in,
+  sign-out, session expiry, cellar-list access control, and frontend route
+  protection.
+- UX changes preserve sitemap terminology: `Start Page`, `Register`, `Sign In`,
+  and `Cellars`.
+- Performance expectations are measurable and included above.
+- User-facing work references only `/workspaces/winecellar-spec-kit/design/design-system.json`.
+- Data design references `/workspaces/winecellar-spec-kit/docs/architecture/information-model.mmd`
+  and explains MongoDB aggregate boundaries in `data-model.md`.
+- Each phase below defines the tests required before moving on.
+- Temporary exception requiring explicit approval before implementation:
+  identity audit events need a `USER_ACCOUNT` primary target before any cellar
+  exists. That conflicts with the current constitution's event target
+  restriction and is documented in Complexity Tracking.
 
 ## Project Structure
 
@@ -73,7 +78,7 @@ specs/001-landing-auth-cellars/
 ├── data-model.md
 ├── quickstart.md
 ├── contracts/
-│   └── auth-cellars.openapi.yaml
+│   └── openapi.yaml
 └── tasks.md
 ```
 
@@ -81,101 +86,145 @@ specs/001-landing-auth-cellars/
 
 ```text
 backend/
+├── pom.xml
 ├── src/
-│   ├── models/
-│   ├── services/
-│   └── api/
-└── tests/
-
+│   ├── main/
+│   │   ├── java/com/winecellar/
+│   │   │   ├── auth/
+│   │   │   ├── cellar/
+│   │   │   ├── shared/
+│   │   │   └── config/
+│   │   └── resources/
+│   └── test/
+│       ├── java/com/winecellar/
+│       └── resources/
 frontend/
+├── package.json
+├── vite.config.ts
+├── tailwind.config.ts
 ├── src/
+│   ├── app/
+│   ├── routes/
 │   ├── components/
-│   ├── pages/
-│   └── services/
-└── tests/
+│   ├── features/
+│   │   ├── landing/
+│   │   ├── auth/
+│   │   └── cellars/
+│   ├── lib/
+│   └── styles/
+│       └── tokens.css
+docker-compose.yml
 ```
 
-**Structure Decision**: Use the repository’s backend/frontend split. The backend
-owns auth, session, activation, and cellar-summary APIs. The frontend owns
-public pages, auth pages, protected routing, and the authenticated cellars
-screen, while consuming backend contracts through a dedicated service layer.
+**Structure Decision**: Use separate `backend/` and `frontend/` applications so
+the Spring Boot API, MongoDB integration, and React web client can evolve
+independently while still being orchestrated together via root
+`docker-compose.yml`. The new `frontend/` intentionally mirrors
+`/frontend-template` concepts such as route-driven pages, shared components, and
+global design tokens, but upgrades them to TypeScript and Tailwind 4 and keeps
+the template as reference-only source material.
 
-**Phase Test Gate**: At the end of every phase, run the phase’s declared test
-suite and do not proceed until all tests pass. Setup and foundational phases
-must include executable smoke tests for backend and frontend bootstrap validity,
-not documentation-only review steps.
+**Phase Test Gate**: A phase is complete only after the tests listed under that
+phase pass locally.
 
-## Phase 0: Research
+## Phase 0: Research And Technical Decisions
 
-### Goals
+Produce `research.md` and resolve the open implementation decisions for auth,
+session handling, MongoDB aggregates, frontend architecture, email delivery,
+and Docker Compose topology.
 
-- Confirm the frontend interpretation of “React Native with Vite” as React
-  Native for Web delivered as a web application.
-- Define MongoDB modeling decisions for user accounts, activation records,
-  sessions, access-history events, cellars, and cellar memberships.
-- Define the minimal public/authenticated interface contracts needed for this
-  feature.
-- Derive UX constraints from `docs/ui-inspiration/design-brief.md` for the
-  landing page, auth forms, and cellars page.
+**Phase 0 test gate**
 
-### Output
+- Manual review that `research.md` resolves all plan ambiguities.
+- Manual review that business functionality identified for later phases has a
+  corresponding unit-test strategy.
+- `docker compose config` for the planned service topology once the compose file
+  exists in implementation.
 
-- [/workspaces/winecellar-spec-kit/specs/001-landing-auth-cellars/research.md](/workspaces/winecellar-spec-kit/specs/001-landing-auth-cellars/research.md)
+## Phase 1: Design And Contracts
 
-### Phase 0 Test Gate
+Produce `data-model.md`, `/contracts/openapi.yaml`, and `quickstart.md`.
+Document the MongoDB collections, API contracts, route behavior, role effects,
+and local startup flow for backend, frontend, MongoDB, and activation-link logging.
 
-- Validate that `research.md` resolves all design and modeling decisions needed
-  to avoid `NEEDS CLARIFICATION` in later artifacts.
-- No code-level automated tests are expected in this phase, but route decisions
-  and access-history event scope must be fully resolved.
+**Phase 1 test gate**
 
-## Phase 1: Design & Contracts
+- Contract review against the feature spec and sitemap routes.
+- Schema lint or OpenAPI validation for `contracts/openapi.yaml`.
+- Manual review that every nullable relationship and event type is documented.
+- Manual review that backend and frontend business rules are assigned explicit
+  unit-test coverage in the design.
 
-### Goals
+## Phase 2: Implementation Plan
 
-- Translate the information model into a MongoDB-oriented data model for this
-  feature’s required aggregates and references.
-- Define HTTP contracts for registration, activation, login, session state, and
-  cellar listing.
-- Define the identity access-history event model and where each state-changing
-  auth action emits it.
-- Define manual implementation and validation steps for backend and frontend.
-- Update agent context from the completed plan.
+### Backend
 
-### Output
+1. Create a Spring Boot 4 service in `/backend` with modules for auth, cellar
+   listing, shared config, and audit/event persistence.
+2. Implement registration, activation, sign-in, sign-out, session validation,
+   and current-session lookup endpoints.
+3. Persist activation tokens with 15-minute expiry and single-use semantics.
+4. Persist 12-hour authenticated sessions in MongoDB and enforce them via a
+   secure HTTP-only session cookie or bearer token abstraction selected in
+   `research.md`.
+5. Implement cellar listing by joining `CELLAR_MEMBERSHIP` to `CELLAR` and
+   returning only accessible cellars.
+6. Emit identity access events for registration, activation issuance, activation
+   success/failure, sign-in success/failure, sign-out, and expiry handling.
+7. Implement an activation delivery port with a log-based adapter for early
+   iterations and a Brevo adapter planned behind the same interface.
 
-- [/workspaces/winecellar-spec-kit/specs/001-landing-auth-cellars/data-model.md](/workspaces/winecellar-spec-kit/specs/001-landing-auth-cellars/data-model.md)
-- [/workspaces/winecellar-spec-kit/specs/001-landing-auth-cellars/contracts/auth-cellars.openapi.yaml](/workspaces/winecellar-spec-kit/specs/001-landing-auth-cellars/contracts/auth-cellars.openapi.yaml)
-- [/workspaces/winecellar-spec-kit/specs/001-landing-auth-cellars/quickstart.md](/workspaces/winecellar-spec-kit/specs/001-landing-auth-cellars/quickstart.md)
+**Backend test gate**
 
-### Phase 1 Test Gate
+- `mvn test`
+- Unit tests for registration, activation-token issuance/validation, session
+  expiry rules, cellar-authorization rules, and activation-link logging service
+- Targeted integration tests for registration, activation expiry, duplicate
+  activation, blocked sign-in before activation, valid sign-in, invalid
+  credentials, sign-out, expired session rejection, and authorized cellar list
 
-- Contract documents are internally consistent with the spec and data model.
-- Data model preserves constitutional boundaries and MongoDB document-database
-  principles.
-- Setup and foundational smoke tests are defined for backend application startup
-  and frontend route-shell rendering.
-- If contract linting or schema validation tooling exists later, it MUST pass
-  before implementation work begins.
+### Frontend
 
-## Post-Design Constitution Re-Check
+1. Create a React + Vite + Tailwind 4 application in `/frontend`.
+2. Rebuild the route shell from `/frontend-template` in TypeScript with
+   `/`, `/register`, `/activate`, `/sign-in`, and `/cellars`.
+3. Translate `/workspaces/winecellar-spec-kit/design/design-system.json` into
+   Tailwind 4 theme tokens, typography utilities, motion choices, and reusable
+   components.
+4. Implement landing, registration, activation-result, sign-in, and cellars
+   pages with protected routing and consistent feedback surfaces.
+5. Use a shared API client for auth/session state and cellar loading.
 
-- PASS: The design preserves cellar-level permissions and does not introduce
-  unauthorized lower-level ACLs.
-- PASS: User account, activation token, session, cellar, and cellar membership
-  remain separate concepts with explicit relationships.
-- PASS: Identity access-history events are modeled explicitly for state-changing
-  auth actions.
-- PASS: MongoDB modeling uses document aggregates for write ownership while
-  preserving the information model rather than flattening it away.
-- PASS: User-facing routes and API contracts align with the sitemap and keep UX
-  terminology consistent.
-- PASS: Testing obligations remain explicit across backend, frontend, contract,
-  and end-to-end flows.
-- PASS: Performance targets have corresponding verification work before
-  implementation completion.
+**Frontend test gate**
+
+- `npm test`
+- `npm run lint`
+- Unit tests for route guards, auth-state transitions, form-state validation,
+  and cellar-list view-model behavior
+- Route/component tests for unauthenticated redirect, registration submission,
+  activation status messaging, sign-in error handling, and empty/non-empty
+  cellars states
+
+### Deployment
+
+1. Add root `docker-compose.yml` for `mongodb`, `backend`, `frontend`, and a
+   shared network and volumes required by the composed stack.
+2. Configure backend and frontend containers for environment-based service URLs,
+   startup ordering, and persistent MongoDB storage.
+3. Keep activation-link logging enabled by default in Compose-based local
+   development, with Brevo-related configuration reserved for later iterations.
+4. Ensure the quickstart uses Compose as the default local runtime path.
+
+**Deployment test gate**
+
+- `docker compose config`
+- `docker compose up --build` smoke test
+- Verification that backend logs expose activation links in local development
+- Manual verification of landing page, registration flow, activation flow,
+  sign-in, and `/cellars` access through the composed stack
 
 ## Complexity Tracking
 
-No constitutional violations or exceptional complexity require justification at
-this stage.
+| Violation | Why Needed | Simpler Alternative Rejected Because |
+|-----------|------------|-------------------------------------|
+| Identity access events need a non-cellar target category (`USER_ACCOUNT`) | Registration, activation, and sign-in occur before a user necessarily has cellar context, but the feature requires auditable identity history | Dropping pre-cellar audit events would violate FR-019 through FR-021 and make auth history incomplete |

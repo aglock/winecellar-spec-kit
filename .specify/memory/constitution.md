@@ -1,15 +1,15 @@
 <!--
 Sync Impact Report
-- Version change: 1.1.0 -> 1.2.0
-- Modified principles: V. Canonical Reference Data, Geographic Consistency, And Readable Implementation expanded
+- Version change: 1.2.0 -> 1.3.0
+- Modified principles: IV. Evented Audit Trail expanded; V. Canonical Reference Data, Geographic Consistency, And Readable Implementation expanded
 - Added sections: VI. Code Quality And Maintainability; VII. Testing Standards; VIII. User Experience Consistency; IX. Performance As A Requirement
 - Removed sections: none
 - Templates requiring updates:
-  - ✅ updated /workspaces/winecellar-spec-kit/.specify/templates/plan-template.md
-  - ✅ updated /workspaces/winecellar-spec-kit/.specify/templates/spec-template.md
-  - ✅ updated /workspaces/winecellar-spec-kit/.specify/templates/tasks-template.md
-  - ✅ updated /workspaces/winecellar-spec-kit/.codex/prompts/speckit.constitution.md
-- Follow-up TODOs: none
+  - ⚠ review /workspaces/winecellar-spec-kit/.specify/templates/plan-template.md for event target wording if constitution-derived text is regenerated
+  - ⚠ review /workspaces/winecellar-spec-kit/.specify/templates/spec-template.md for event target wording if constitution-derived text is regenerated
+  - ⚠ review /workspaces/winecellar-spec-kit/.codex/prompts/speckit.constitution.md if constitution summaries are regenerated
+- Follow-up TODOs:
+  - reconcile existing specs that documented `USER_ACCOUNT` event targets as temporary exceptions
 -->
 
 # winecellar-spec-kit Constitution
@@ -50,11 +50,14 @@ inventory records when a reusable domain concept already exists.
 History is a first-class requirement. State-changing actions MUST create event
 records in addition to updating current state. Every event MUST record the
 acting user, event type, occurrence time, cellar context, and exactly one
-primary target object. The allowed primary target categories are `BOTTLE`,
-`COMPARTMENT`, or `CELLAR`. Event metadata MAY describe secondary context such
-as source and destination compartments for a move, but the primary target MUST
-remain singular and explicit. Specifications MUST NOT rely on inferred history
-from current state alone.
+primary target object. The allowed primary target categories are `USER_ACCOUNT`,
+`BOTTLE`, `COMPARTMENT`, or `CELLAR`. `USER_ACCOUNT` is permitted only for
+identity and access events such as registration, activation, sign-in outcome,
+session lifecycle, or other account-scoped security actions that may occur
+before cellar context exists. Event metadata MAY describe secondary context
+such as source and destination compartments for a move, but the primary target
+MUST remain singular and explicit. Specifications MUST NOT rely on inferred
+history from current state alone.
 
 ### V. Canonical Reference Data, Geographic Consistency, And Readable Implementation
 The model MUST reuse canonical domain concepts instead of introducing parallel
@@ -148,19 +151,23 @@ retrieval at expected scale.
 3. Every spec that touches bottles, compartments, or cellar lifecycle MUST
    define the events created, the primary target type of each event, and the
    minimum event metadata required for traceability.
-4. Every spec that touches wine, grapes, appellations, or regions MUST verify
+4. Every spec that touches identity or access flows MUST define the events
+   created, the primary target type of each event, and the minimum event
+   metadata required for traceability. `USER_ACCOUNT` is the canonical primary
+   target for identity-scoped events unless a stronger domain target exists.
+5. Every spec that touches wine, grapes, appellations, or regions MUST verify
    that it reuses canonical `COUNTRY`, `REGION`, and `APPELLATION` concepts and
    stays compatible with `docs/resources/grapes-masterlist.json`.
-5. Reviewers MUST reject specifications that introduce parallel text fields for
+6. Reviewers MUST reject specifications that introduce parallel text fields for
    canonical concepts, implicit permissions, unbounded nullability, or history
    modeled only as mutable state.
-6. Reviewers MUST treat consistency of the information model as higher priority
+7. Reviewers MUST treat consistency of the information model as higher priority
    than early storage optimization. Pragmatic denormalization MAY be added later,
    but only after the semantic model is explicit.
-7. Every implementation-oriented spec MUST define expected code quality,
+8. Every implementation-oriented spec MUST define expected code quality,
    required automated test coverage, user experience consistency constraints,
    and any relevant measurable performance targets.
-8. Any exception to these rules MUST be documented in a dedicated constitution
+9. Any exception to these rules MUST be documented in a dedicated constitution
    check with rationale, rejected alternatives, and impact on traceability.
 
 ## Governance
@@ -187,4 +194,4 @@ Specifications and plans MUST NOT proceed with unresolved constitutional
 violations unless the violation is explicitly documented, justified, and
 approved as a temporary exception.
 
-**Version**: 1.2.0 | **Ratified**: 2026-03-15 | **Last Amended**: 2026-03-15
+**Version**: 1.3.0 | **Ratified**: 2026-03-15 | **Last Amended**: 2026-03-17

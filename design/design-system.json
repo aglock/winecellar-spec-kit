@@ -1,0 +1,885 @@
+{
+  "meta": {
+    "name": "Winecellar Design System",
+    "version": "1.0.0",
+    "lastUpdated": "2026-03-16",
+    "product": "Wine cellar management application",
+    "purpose": "Authoritative UI design guide for humans and AI building new features in this application.",
+    "status": "active",
+    "platforms": [
+      "web",
+      "react-native",
+      "react-native-web"
+    ],
+    "designIntent": "Create a premium, warm, structured product experience that feels like a modern cellar journal: refined, tactile, trustworthy, and calm."
+  },
+  "brand": {
+    "coreMetaphor": "A private wine cellar translated into software",
+    "personality": [
+      "cultured",
+      "calm",
+      "confident",
+      "precise",
+      "warm",
+      "archival"
+    ],
+    "doNotBe": [
+      "flashy",
+      "nightclub-luxury",
+      "sterile enterprise",
+      "playful consumer social app",
+      "rustic kitsch"
+    ],
+    "keywords": [
+      "cellar stone",
+      "oak shelving",
+      "paper labels",
+      "deep garnet",
+      "brass accents",
+      "catalog precision"
+    ]
+  },
+  "creativeDirection": {
+    "styleSummary": "Editorial luxury grounded in utility. Interfaces should blend the warmth of wine culture with the clarity of a professional inventory tool.",
+    "experienceGoals": [
+      "Make bottle and cellar data feel valuable and carefully kept.",
+      "Keep forms and workflows clear, fast, and low-friction.",
+      "Use strong hierarchy and restrained ornament rather than decorative overload.",
+      "Make empty states aspirational, not barren.",
+      "Communicate trust for authentication, inventory, and audit history."
+    ],
+    "visualBalance": {
+      "warmth": "high",
+      "precision": "high",
+      "ornament": "low",
+      "density": "medium",
+      "contrast": "high"
+    }
+  },
+  "designPrinciples": [
+    "Lead with atmosphere, then structure. Pages should feel premium at first glance and obvious to use at second glance.",
+    "Use dark, wine-forward tones carefully. Most product surfaces should remain light or softly tinted for readability.",
+    "Treat data like a collection catalog. Alignment, spacing, and labels must feel deliberate.",
+    "Make primary actions unmistakable, but never loud enough to cheapen the interface.",
+    "Prefer fewer, stronger accents. One rich color and one metallic highlight are enough.",
+    "Use card grouping and section dividers to mirror cellar compartments and bottle rows.",
+    "Show hierarchy through typography, spacing, and material contrast before using extra borders.",
+    "Reward deeper product moments with richer visuals, but keep auth and utility flows clean and focused."
+  ],
+  "foundations": {
+    "color": {
+      "palette": {
+        "canvas": "#F5F1EA",
+        "canvasWarm": "#EFE7DC",
+        "surface": "#FFFDFC",
+        "surfaceRaised": "#FFFFFF",
+        "surfaceTinted": "#F8F3EE",
+        "surfaceInverse": "#24191A",
+        "textPrimary": "#24191A",
+        "textSecondary": "#5C4B4C",
+        "textMuted": "#8A7778",
+        "textInverse": "#F8F4EF",
+        "borderSubtle": "#E6D8CF",
+        "borderStrong": "#CBB7A9",
+        "divider": "#DCCDC2",
+        "brandPrimary": "#6E1F32",
+        "brandPrimaryHover": "#5D192A",
+        "brandPrimaryActive": "#4D1422",
+        "brandPrimarySoft": "#F4E5EA",
+        "brandSecondary": "#A36A2C",
+        "brandSecondarySoft": "#F6E9D7",
+        "accentOlive": "#5E6B3F",
+        "accentOliveSoft": "#EAF0DF",
+        "accentPlum": "#4D3B57",
+        "accentPlumSoft": "#EEE8F2",
+        "success": "#2E7D5B",
+        "successSoft": "#E4F3EC",
+        "warning": "#A86C1F",
+        "warningSoft": "#F8EBD9",
+        "danger": "#B13E3E",
+        "dangerSoft": "#F9E3E3",
+        "info": "#355C7D",
+        "infoSoft": "#E3EDF5",
+        "focus": "#8C2F46",
+        "overlay": "rgba(25, 16, 17, 0.56)",
+        "shadow": "rgba(36, 25, 26, 0.16)",
+        "shadowStrong": "rgba(36, 25, 26, 0.26)"
+      },
+      "usageRules": [
+        "Default pages use warm light neutrals, not stark white.",
+        "Reserve brandPrimary for primary actions, active navigation, key highlights, and critical emphasis.",
+        "Use brandSecondary sparingly as a premium metallic accent for badges, key numbers, and decorative dividers.",
+        "Dark backgrounds should appear in hero sections, modal emphasis states, or selected-cellar headers, not as the global default.",
+        "Semantic colors must always pair with tinted backgrounds in status surfaces.",
+        "Never place large bodies of text on brandPrimary backgrounds unless the text is inverse and spacing is generous."
+      ]
+    },
+    "typography": {
+      "fontFamilies": {
+        "display": "\"Cormorant Garamond\", \"Times New Roman\", serif",
+        "body": "\"Manrope\", \"Avenir Next\", \"Segoe UI\", sans-serif",
+        "mono": "\"IBM Plex Mono\", \"SFMono-Regular\", monospace"
+      },
+      "fallbackStrategy": "If the preferred fonts are unavailable, keep a high-contrast serif for headings and a clean contemporary sans-serif for UI/body copy.",
+      "weights": {
+        "regular": 400,
+        "medium": 500,
+        "semibold": 600,
+        "bold": 700
+      },
+      "scale": {
+        "displayXl": {
+          "size": 64,
+          "lineHeight": 1.02,
+          "weight": 600,
+          "tracking": -0.03
+        },
+        "displayLg": {
+          "size": 52,
+          "lineHeight": 1.04,
+          "weight": 600,
+          "tracking": -0.025
+        },
+        "headingXl": {
+          "size": 40,
+          "lineHeight": 1.08,
+          "weight": 600,
+          "tracking": -0.02
+        },
+        "headingLg": {
+          "size": 32,
+          "lineHeight": 1.12,
+          "weight": 600,
+          "tracking": -0.015
+        },
+        "headingMd": {
+          "size": 26,
+          "lineHeight": 1.18,
+          "weight": 600,
+          "tracking": -0.01
+        },
+        "headingSm": {
+          "size": 22,
+          "lineHeight": 1.22,
+          "weight": 600,
+          "tracking": -0.005
+        },
+        "title": {
+          "size": 18,
+          "lineHeight": 1.3,
+          "weight": 600,
+          "tracking": -0.01
+        },
+        "bodyLg": {
+          "size": 18,
+          "lineHeight": 1.55,
+          "weight": 400,
+          "tracking": 0
+        },
+        "bodyMd": {
+          "size": 16,
+          "lineHeight": 1.6,
+          "weight": 400,
+          "tracking": 0
+        },
+        "bodySm": {
+          "size": 14,
+          "lineHeight": 1.55,
+          "weight": 400,
+          "tracking": 0
+        },
+        "label": {
+          "size": 12,
+          "lineHeight": 1.4,
+          "weight": 600,
+          "tracking": 0.08
+        },
+        "meta": {
+          "size": 11,
+          "lineHeight": 1.35,
+          "weight": 500,
+          "tracking": 0.1
+        }
+      },
+      "rules": [
+        "Use the serif display face for hero headlines, page-opening moments, and premium data callouts only.",
+        "Use the sans-serif family for navigation, forms, tables, cards, and all interactive UI.",
+        "Labels and overlines may use uppercase with generous tracking; body copy and buttons should remain in sentence case.",
+        "Avoid fully justified text.",
+        "Keep line lengths between 45 and 80 characters for paragraph content."
+      ]
+    },
+    "spacing": {
+      "baseUnit": 4,
+      "scale": {
+        "0": 0,
+        "1": 4,
+        "2": 8,
+        "3": 12,
+        "4": 16,
+        "5": 20,
+        "6": 24,
+        "8": 32,
+        "10": 40,
+        "12": 48,
+        "16": 64,
+        "20": 80,
+        "24": 96
+      },
+      "layoutRules": [
+        "Page gutters: 24px mobile, 40px tablet, 64px desktop.",
+        "Card padding: 20px compact cards, 24px default cards, 32px feature cards.",
+        "Section spacing should expand significantly between page bands to preserve a calm premium rhythm.",
+        "Dense data areas may reduce vertical spacing, but should never feel cramped."
+      ]
+    },
+    "radius": {
+      "xs": 8,
+      "sm": 12,
+      "md": 16,
+      "lg": 20,
+      "xl": 28,
+      "pill": 999,
+      "usage": {
+        "inputs": "12px",
+        "buttons": "14px",
+        "cards": "20px",
+        "dialogs": "28px",
+        "badges": "999px"
+      }
+    },
+    "border": {
+      "thin": "1px solid #E6D8CF",
+      "strong": "1px solid #CBB7A9",
+      "heavy": "2px solid #CBB7A9",
+      "focusRing": "0 0 0 3px rgba(140, 47, 70, 0.18)",
+      "guidance": [
+        "Prefer subtle warm borders over cool gray lines.",
+        "Use stronger borders only for selected states, table delineation, and high-importance containers.",
+        "Do not stack border emphasis and strong shadows on the same component unless the component is modal."
+      ]
+    },
+    "shadow": {
+      "sm": "0 6px 18px rgba(36, 25, 26, 0.08)",
+      "md": "0 14px 34px rgba(36, 25, 26, 0.12)",
+      "lg": "0 24px 60px rgba(36, 25, 26, 0.18)",
+      "inner": "inset 0 1px 0 rgba(255, 255, 255, 0.45)",
+      "rules": [
+        "Shadows should feel like soft architectural depth, not floating neon cards.",
+        "Use shadows more on modals, dropdowns, and hero cards than on every small control.",
+        "On mobile, reduce shadow blur slightly to keep surfaces crisp."
+      ]
+    },
+    "motion": {
+      "durationFast": 120,
+      "durationStandard": 180,
+      "durationSlow": 280,
+      "easingStandard": "cubic-bezier(0.22, 1, 0.36, 1)",
+      "easingExit": "cubic-bezier(0.4, 0, 1, 1)",
+      "patterns": [
+        "Use fade and rise for dialogs, drawers, and flyouts.",
+        "Use subtle background tint shifts on hover rather than dramatic movement.",
+        "Primary buttons may lift by 1-2px on hover on desktop only.",
+        "Avoid bouncing, elastic motion, or overscaled transitions."
+      ]
+    },
+    "iconography": {
+      "style": "Clean outlined icons with slight human softness rather than purely geometric tech icons.",
+      "strokeWeight": 1.75,
+      "cornerStyle": "rounded",
+      "defaultColor": "#5C4B4C",
+      "activeColor": "#6E1F32",
+      "sizes": {
+        "sm": 16,
+        "md": 20,
+        "lg": 24
+      }
+    },
+    "grid": {
+      "desktopColumns": 12,
+      "tabletColumns": 8,
+      "mobileColumns": 4,
+      "maxContentWidth": 1280,
+      "rules": [
+        "Landing pages can intentionally break the grid with overlapping editorial blocks, but content edges must still align to base gutters.",
+        "Application pages should use predictable column spans for scannability.",
+        "Data tables and list rows should align to consistent internal column systems."
+      ]
+    }
+  },
+  "theming": {
+    "lightMode": {
+      "default": true,
+      "description": "Primary operating mode for all product surfaces."
+    },
+    "darkMode": {
+      "supported": true,
+      "description": "Optional premium mode for selected experiences, but parity should follow light mode design decisions rather than redefine them.",
+      "guidelines": [
+        "Use deep espresso and aubergine surfaces instead of pure black.",
+        "Keep gold accents muted and matte.",
+        "Do not invert every semantic color literally; retune them for contrast."
+      ]
+    }
+  },
+  "surfaces": {
+    "pageBackgrounds": {
+      "marketing": "Warm parchment gradient or softly textured neutral field",
+      "application": "Flat warm canvas with occasional tinted sections",
+      "modalBackdrop": "Dark translucent overlay with slight blur if supported"
+    },
+    "materials": [
+      {
+        "name": "parchment",
+        "use": "landing hero backgrounds, empty states, editorial callouts",
+        "description": "Soft warm neutral with low-contrast tonal variation"
+      },
+      {
+        "name": "stone-card",
+        "use": "dashboard and list containers",
+        "description": "Light raised surface with warm border and restrained shadow"
+      },
+      {
+        "name": "reserve-dark",
+        "use": "hero bands, selected cellar header, premium summary tiles",
+        "description": "Deep cellar-toned surface with inverse typography"
+      }
+    ]
+  },
+  "contentStyle": {
+    "voice": {
+      "tone": "Measured, informed, and warm",
+      "traits": [
+        "clear",
+        "assured",
+        "non-salesy",
+        "cultured without pretension"
+      ]
+    },
+    "microcopyRules": [
+      "Use straightforward product language before wine jargon.",
+      "When wine terminology appears, keep it accurate and restrained.",
+      "Buttons should use explicit verbs: Sign in, Create cellar, Save bottle, Invite member.",
+      "Empty states should suggest progress and collection-building, not failure.",
+      "Validation errors should be plain and corrective, not dramatic."
+    ],
+    "terminology": {
+      "use": [
+        "cellar",
+        "bottle",
+        "compartment",
+        "inventory",
+        "member",
+        "shared with me"
+      ],
+      "avoid": [
+        "vault",
+        "stash",
+        "crate",
+        "SKU",
+        "asset"
+      ]
+    }
+  },
+  "pageTemplates": {
+    "startPage": {
+      "goal": "Explain the product quickly and establish a premium first impression.",
+      "layout": "Editorial hero with strong serif headline, supporting proof blocks, feature grid, and clear sign-in/register actions.",
+      "requiredSections": [
+        "hero",
+        "benefit summary",
+        "product screenshots or illustrations",
+        "trust or workflow explanation",
+        "primary CTA band"
+      ],
+      "visualNotes": [
+        "Use one dramatic wine-related image or atmospheric cellar composition, not a collage.",
+        "Allow generous whitespace around the hero copy.",
+        "Keep CTAs visible above the fold on desktop and mobile."
+      ]
+    },
+    "registrationPage": {
+      "goal": "Make account creation feel secure, elegant, and low-friction.",
+      "layout": "Single focused form card with optional side panel for brand storytelling on desktop.",
+      "rules": [
+        "Prioritize form clarity over decoration.",
+        "Use progress reassurance for activation-email step.",
+        "Place terms, privacy, and support links in quiet supporting text."
+      ]
+    },
+    "signInPage": {
+      "goal": "Provide a fast trusted re-entry point.",
+      "layout": "Compact centered auth card or split layout aligned with registration styling.",
+      "rules": [
+        "Keep password recovery and registration links visible but secondary.",
+        "Error states must remain calm and readable."
+      ]
+    },
+    "cellarsPage": {
+      "goal": "Orient signed-in users and expose their cellar universe clearly.",
+      "layout": "Header summary followed by cellar cards or an aspirational empty state.",
+      "rules": [
+        "Use stronger structure than on marketing pages.",
+        "Cellar cards should show name, role, bottle count if available, and recent activity hints.",
+        "Empty state should include a strong create/join path."
+      ]
+    },
+    "dataPages": {
+      "goal": "Make dense inventory information feel organized and premium.",
+      "patterns": [
+        "Sticky page header with contextual actions",
+        "Segmented filters",
+        "Search and sort row",
+        "Table/list toggle where appropriate",
+        "Detail panel or dedicated detail page"
+      ]
+    }
+  },
+  "navigation": {
+    "globalNav": {
+      "height": 72,
+      "style": "Light surface or translucent warm surface with subtle bottom border",
+      "logoTreatment": "Wordmark or mark should feel understated and premium; avoid oversized app-logo treatment.",
+      "items": {
+        "case": "sentence",
+        "weight": 600,
+        "spacing": "16-24px between items"
+      },
+      "activeState": "BrandPrimary text with short underline or pill tint",
+      "mobileBehavior": "Use a sheet or drawer, not a full-screen novelty menu"
+    },
+    "secondaryNav": {
+      "style": "Tabs or segmented pills depending on density",
+      "usage": "Cellar-level navigation, settings sub-sections, inventory views"
+    },
+    "breadcrumbs": {
+      "style": "Small muted text with medium-weight current item",
+      "usage": "Deep cellar flows such as bottle detail, compartment detail, settings"
+    }
+  },
+  "components": {
+    "buttons": {
+      "primary": {
+        "height": 48,
+        "paddingX": 20,
+        "background": "#6E1F32",
+        "textColor": "#F8F4EF",
+        "radius": 14,
+        "shadow": "0 10px 24px rgba(110, 31, 50, 0.24)",
+        "states": {
+          "hover": {
+            "background": "#5D192A",
+            "translateY": -1
+          },
+          "active": {
+            "background": "#4D1422",
+            "translateY": 0
+          },
+          "disabled": {
+            "background": "#D8C3C8",
+            "textColor": "#F8F4EF",
+            "shadow": "none"
+          }
+        }
+      },
+      "secondary": {
+        "height": 48,
+        "paddingX": 20,
+        "background": "#FFFDFC",
+        "textColor": "#24191A",
+        "border": "1px solid #CBB7A9",
+        "radius": 14,
+        "states": {
+          "hover": {
+            "background": "#F8F3EE"
+          },
+          "active": {
+            "background": "#EFE7DC"
+          }
+        }
+      },
+      "tertiary": {
+        "height": 44,
+        "paddingX": 16,
+        "background": "transparent",
+        "textColor": "#6E1F32",
+        "states": {
+          "hover": {
+            "background": "#F4E5EA"
+          }
+        }
+      },
+      "destructive": {
+        "height": 48,
+        "background": "#B13E3E",
+        "textColor": "#FFF7F7"
+      },
+      "iconButton": {
+        "sizes": {
+          "sm": 36,
+          "md": 44,
+          "lg": 52
+        },
+        "style": "Rounded-square or circular depending on context; default to rounded-square for app utility."
+      }
+    },
+    "inputs": {
+      "textField": {
+        "height": 52,
+        "background": "#FFFDFC",
+        "border": "1px solid #CBB7A9",
+        "radius": 12,
+        "paddingX": 16,
+        "labelStyle": "12px uppercase tracked label above field",
+        "placeholderColor": "#8A7778",
+        "focus": {
+          "borderColor": "#8C2F46",
+          "ring": "0 0 0 3px rgba(140, 47, 70, 0.18)"
+        },
+        "error": {
+          "borderColor": "#B13E3E",
+          "background": "#FFF8F8"
+        }
+      },
+      "select": {
+        "matchTextField": true,
+        "caretColor": "#6E1F32"
+      },
+      "textarea": {
+        "minHeight": 120,
+        "resize": "vertical on web"
+      },
+      "searchField": {
+        "style": "TextField with leading search icon and slightly more pill-like silhouette for top-level search"
+      },
+      "checkbox": {
+        "shape": "Rounded square",
+        "selectedColor": "#6E1F32"
+      },
+      "radio": {
+        "shape": "Circle",
+        "selectedColor": "#6E1F32"
+      },
+      "switch": {
+        "trackOff": "#DCCDC2",
+        "trackOn": "#A36A2C",
+        "thumb": "#FFFFFF"
+      }
+    },
+    "cards": {
+      "defaultCard": {
+        "background": "#FFFDFC",
+        "border": "1px solid #E6D8CF",
+        "radius": 20,
+        "padding": 24,
+        "shadow": "0 14px 34px rgba(36, 25, 26, 0.12)"
+      },
+      "featureCard": {
+        "background": "#FFFFFF",
+        "radius": 24,
+        "padding": 32,
+        "mediaTreatment": "Large image or illustration with warm overlay if needed"
+      },
+      "cellarCard": {
+        "layout": "Title, role/meta row, stats, and primary action area",
+        "accent": "Thin top border or badge in brandSecondary or brandPrimary",
+        "hover": "Slight elevation and border emphasis"
+      },
+      "bottleCard": {
+        "layout": "Vintage, producer, wine name, region, storage location, quantity",
+        "visualAnchor": "Bottle silhouette, label preview, or restrained color band"
+      }
+    },
+    "lists": {
+      "rowHeight": {
+        "comfortable": 56,
+        "dense": 48
+      },
+      "rules": [
+        "Alternate row fills only when density is high; otherwise use whitespace and dividers.",
+        "Selection states should use brandPrimarySoft background and stronger text weight.",
+        "Important numeric columns should align right."
+      ]
+    },
+    "tables": {
+      "header": {
+        "background": "#F8F3EE",
+        "textColor": "#5C4B4C",
+        "textStyle": "12px uppercase tracked label"
+      },
+      "cellPadding": "14px 16px",
+      "rowHover": "#FBF7F2",
+      "rules": [
+        "Use tables for inventory only when users need to scan multiple attributes quickly.",
+        "Keep action columns compact and right-aligned.",
+        "Never overload a single row with more than two action buttons."
+      ]
+    },
+    "badges": {
+      "base": {
+        "height": 28,
+        "paddingX": 10,
+        "radius": 999,
+        "textStyle": "12px semibold"
+      },
+      "role": {
+        "owner": {
+          "background": "#F6E9D7",
+          "text": "#7A511D"
+        },
+        "contributor": {
+          "background": "#F4E5EA",
+          "text": "#6E1F32"
+        },
+        "viewer": {
+          "background": "#EEE8F2",
+          "text": "#4D3B57"
+        }
+      },
+      "status": {
+        "success": {
+          "background": "#E4F3EC",
+          "text": "#2E7D5B"
+        },
+        "warning": {
+          "background": "#F8EBD9",
+          "text": "#A86C1F"
+        },
+        "danger": {
+          "background": "#F9E3E3",
+          "text": "#B13E3E"
+        },
+        "info": {
+          "background": "#E3EDF5",
+          "text": "#355C7D"
+        }
+      }
+    },
+    "alerts": {
+      "info": {
+        "background": "#E3EDF5",
+        "border": "1px solid #B5CBDD",
+        "iconColor": "#355C7D"
+      },
+      "success": {
+        "background": "#E4F3EC",
+        "border": "1px solid #BFE0CF",
+        "iconColor": "#2E7D5B"
+      },
+      "warning": {
+        "background": "#F8EBD9",
+        "border": "1px solid #E7CDAA",
+        "iconColor": "#A86C1F"
+      },
+      "danger": {
+        "background": "#F9E3E3",
+        "border": "1px solid #E8B8B8",
+        "iconColor": "#B13E3E"
+      }
+    },
+    "modals": {
+      "dialog": {
+        "maxWidth": 560,
+        "background": "#FFFDFC",
+        "radius": 28,
+        "padding": 32,
+        "shadow": "0 24px 60px rgba(36, 25, 26, 0.18)"
+      },
+      "destructiveConfirm": {
+        "headerAccent": "#B13E3E"
+      },
+      "sheet": {
+        "use": "Mobile actions, filters, form subsections",
+        "radiusTop": 28
+      }
+    },
+    "dropdowns": {
+      "menu": {
+        "background": "#FFFDFC",
+        "border": "1px solid #E6D8CF",
+        "radius": 16,
+        "shadow": "0 14px 34px rgba(36, 25, 26, 0.12)"
+      }
+    },
+    "tabs": {
+      "underline": {
+        "default": true,
+        "activeColor": "#6E1F32"
+      },
+      "segmented": {
+        "background": "#EFE7DC",
+        "activeBackground": "#FFFDFC"
+      }
+    },
+    "emptyStates": {
+      "layout": "Illustration or atmospheric object, direct headline, explanation, and one primary action",
+      "tone": "Invitational and optimistic",
+      "doNot": [
+        "Use jokes",
+        "Make the user feel behind",
+        "Fill space with generic stock icons"
+      ]
+    },
+    "stats": {
+      "tile": {
+        "background": "#FFFFFF",
+        "labelStyle": "12px uppercase tracked",
+        "valueStyle": "serif heading or strong sans numeric display depending on context"
+      }
+    },
+    "activityTimeline": {
+      "style": "Vertical timeline with restrained markers and warm dividers",
+      "density": "comfortable",
+      "timestampStyle": "small muted mono or meta style"
+    },
+    "searchAndFilter": {
+      "toolbar": {
+        "layout": "Search first, filters second, sort and view controls aligned opposite",
+        "background": "transparent or surface card depending on density"
+      },
+      "filterChips": {
+        "inactiveBackground": "#F8F3EE",
+        "activeBackground": "#F4E5EA",
+        "activeText": "#6E1F32"
+      }
+    }
+  },
+  "dataVisualization": {
+    "usage": "Minimal and functional; charts should support cellar understanding, not dominate the interface.",
+    "paletteOrder": [
+      "#6E1F32",
+      "#A36A2C",
+      "#5E6B3F",
+      "#355C7D",
+      "#4D3B57"
+    ],
+    "rules": [
+      "Prefer bars, stacked bars, and compact line charts over novelty chart types.",
+      "Use warm neutral grids and axes.",
+      "Annotate important values directly when possible."
+    ]
+  },
+  "imagery": {
+    "artDirection": [
+      "Use cellar architecture, bottle labels, cork texture, glass reflections, and vineyard detail sparingly and with restraint.",
+      "Favor moody natural light or soft daylight over heavily stylized neon photography.",
+      "Crop images to preserve negative space for text overlays where needed."
+    ],
+    "illustrationStyle": "Minimal editorial line art or softly shaded forms inspired by bottle shapes, racks, maps, and tags.",
+    "texturePolicy": "Subtle texture is allowed in large backgrounds only; never under dense text or data tables."
+  },
+  "responsiveBehavior": {
+    "breakpoints": {
+      "sm": 480,
+      "md": 768,
+      "lg": 1024,
+      "xl": 1280
+    },
+    "rules": [
+      "Stack editorial split layouts into a single column on mobile while preserving strong hierarchy.",
+      "Collapse dense tables into card lists or horizontally scrollable containers only when unavoidable.",
+      "Primary actions should remain thumb-reachable on mobile forms.",
+      "Navigation and contextual actions should never compete for the same top-row space on small screens."
+    ]
+  },
+  "accessibility": {
+    "contrast": {
+      "bodyTextMinimum": "4.5:1",
+      "largeTextMinimum": "3:1",
+      "nonTextUiMinimum": "3:1"
+    },
+    "rules": [
+      "Do not rely on wine-red hues alone to communicate state or selection.",
+      "Every input must have a persistent visible label.",
+      "Focus states must be clearly visible on light and dark surfaces.",
+      "Touch targets should be at least 44x44px.",
+      "Motion should respect reduced-motion preferences with shortened or removed non-essential animation."
+    ]
+  },
+  "aiImplementationGuidelines": {
+    "mustDo": [
+      "Always apply the warm-neutral foundation before introducing feature-specific styling.",
+      "Use the serif display font only for emphasis moments; default interactive UI to the sans-serif family.",
+      "Preserve consistent component radii, border colors, and button heights across screens.",
+      "When inventing new components, build from existing card, input, badge, and toolbar patterns.",
+      "Keep marketing pages more atmospheric and product pages more structured.",
+      "Use terminology from the sitemap and product spec exactly."
+    ],
+    "mustNotDo": [
+      "Do not switch to generic SaaS blue as the primary accent.",
+      "Do not use purple gradients, black-glass dashboards, or crypto-style glow effects.",
+      "Do not mix more than one decorative serif or more than two UI font families.",
+      "Do not design dense enterprise tables without warm spacing and hierarchy.",
+      "Do not add playful illustrations or mascot-like graphics."
+    ],
+    "newFeatureChecklist": [
+      "Identify whether the screen is marketing, authentication, navigation, inventory, detail, or settings oriented.",
+      "Choose the closest page template and component family from this file.",
+      "Apply foundation tokens first: color, type, spacing, radius, border, shadow.",
+      "Confirm primary and secondary actions are obvious and use approved button patterns.",
+      "Ensure empty, loading, error, and success states match the tone rules.",
+      "Verify mobile and desktop layouts both preserve the premium cellar feel."
+    ]
+  },
+  "featureMappings": {
+    "currentFeatureSet": {
+      "startPage": [
+        "startPage template",
+        "globalNav",
+        "featureCard",
+        "primary and secondary buttons"
+      ],
+      "register": [
+        "registrationPage template",
+        "textField",
+        "alert",
+        "primary button"
+      ],
+      "activate": [
+        "alert",
+        "defaultCard",
+        "primary button",
+        "status badge"
+      ],
+      "signIn": [
+        "signInPage template",
+        "textField",
+        "primary button",
+        "tertiary actions"
+      ],
+      "cellars": [
+        "cellarsPage template",
+        "cellarCard",
+        "stats tile",
+        "empty state",
+        "secondary navigation"
+      ]
+    },
+    "futureFeatureSet": {
+      "inventory": [
+        "searchAndFilter toolbar",
+        "table",
+        "bottleCard",
+        "badges",
+        "modals"
+      ],
+      "compartments": [
+        "defaultCard",
+        "lists",
+        "emptyStates",
+        "secondary navigation"
+      ],
+      "activityLog": [
+        "activityTimeline",
+        "filters",
+        "table"
+      ],
+      "cellarSettings": [
+        "tabs",
+        "forms",
+        "role badges",
+        "destructive confirm modal"
+      ]
+    }
+  }
+}

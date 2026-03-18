@@ -1,173 +1,137 @@
 # Tasks: Landing, Registration, Login, and Cellars
 
-**Input**: Design documents from `/specs/001-landing-auth-cellars/`
-**Prerequisites**: plan.md (required), spec.md (required for user stories), research.md, data-model.md, contracts/
+**Input**: Design documents from `/workspaces/winecellar-spec-kit/specs/001-landing-auth-cellars/`
+**Prerequisites**: `/workspaces/winecellar-spec-kit/specs/001-landing-auth-cellars/plan.md`, `/workspaces/winecellar-spec-kit/specs/001-landing-auth-cellars/spec.md`, `/workspaces/winecellar-spec-kit/specs/001-landing-auth-cellars/research.md`, `/workspaces/winecellar-spec-kit/specs/001-landing-auth-cellars/data-model.md`, `/workspaces/winecellar-spec-kit/specs/001-landing-auth-cellars/contracts/openapi.yaml`
 
-**Tests**: Test tasks are required for this feature because the specification
-explicitly requires automated coverage for registration, activation expiry,
-sign-in, session duration, authenticated cellar access, and unauthenticated
-access denial.
+**Tests**: Unit tests are mandatory for all business functionality in every phase. Integration, contract, and UI tests are also required for the behaviors named in the specification.
 
-**Organization**: Tasks are grouped by user story to enable independent implementation and testing of each story.
-
-## Format: `[ID] [P?] [Story] Description`
-
-- **[P]**: Can run in parallel (different files, no dependencies)
-- **[Story]**: Which user story this task belongs to (e.g., US1, US2, US3)
-- Include exact file paths in descriptions
-
-## Path Conventions
-
-- **Backend**: `backend/src/main/java/`, `backend/src/test/java/`
-- **Frontend**: `frontend/src/`, `frontend/tests/`
-- **Feature docs**: `specs/001-landing-auth-cellars/`
+**Organization**: Tasks are grouped by user story so each story can be implemented and verified independently.
 
 ## Phase 1: Setup (Shared Infrastructure)
 
-**Purpose**: Establish the backend and frontend project scaffolding required by
-the implementation plan.
+**Purpose**: Initialize the backend, frontend, and root tooling structure planned for the feature.
 
-- [ ] T001 Create the Spring Boot backend build configuration in `backend/pom.xml`
-- [ ] T002 Create the frontend package manifest and scripts in `frontend/package.json`
-- [ ] T003 [P] Configure Vite for the React Native Web frontend in `frontend/vite.config.ts`
-- [ ] T004 [P] Configure Tailwind CSS theme integration in `frontend/tailwind.config.js`
-- [ ] T005 [P] Configure frontend TypeScript compilation in `frontend/tsconfig.json`
-- [ ] T006 Create the backend application startup smoke test in `backend/src/test/java/com/winecellar/BootstrapSmokeTest.java`
-- [ ] T007 Create the frontend route-shell smoke test in `frontend/tests/app/app-router-smoke.test.tsx`
-- [ ] T008 Run the setup phase test and validation steps documented in `specs/001-landing-auth-cellars/quickstart.md`
+- [X] T001 Create the backend and frontend workspace skeleton in `/workspaces/winecellar-spec-kit/backend/` and `/workspaces/winecellar-spec-kit/frontend/`
+- [X] T002 Initialize the Spring Boot 4 Maven project and base dependencies in `/workspaces/winecellar-spec-kit/backend/pom.xml`
+- [X] T003 [P] Initialize the React + Vite + Tailwind 4 TypeScript app configuration in `/workspaces/winecellar-spec-kit/frontend/package.json`
+- [X] T004 [P] Create the frontend toolchain files in `/workspaces/winecellar-spec-kit/frontend/vite.config.ts`, `/workspaces/winecellar-spec-kit/frontend/tailwind.config.ts`, and `/workspaces/winecellar-spec-kit/frontend/tsconfig.json`
+- [X] T005 [P] Create the backend application entrypoint and package layout in `/workspaces/winecellar-spec-kit/backend/src/main/java/com/winecellar/WinecellarApplication.java`
+- [X] T006 [P] Create the frontend application entrypoint and route shell in `/workspaces/winecellar-spec-kit/frontend/src/main.tsx` and `/workspaces/winecellar-spec-kit/frontend/src/app/App.tsx`
+- [X] T007 Create root-local runtime orchestration in `/workspaces/winecellar-spec-kit/docker-compose.yml`
 
 ---
 
 ## Phase 2: Foundational (Blocking Prerequisites)
 
-**Purpose**: Core infrastructure that MUST be complete before ANY user story can be implemented
+**Purpose**: Build shared infrastructure that all user stories depend on.
 
-**⚠️ CRITICAL**: No user story work can begin until this phase is complete
+**⚠️ CRITICAL**: No user story work should begin until this phase is complete.
 
-- [ ] T009 Create the Spring Boot application bootstrap in `backend/src/main/java/com/winecellar/WineCellarApplication.java`
-- [ ] T010 [P] Create backend security and session baseline configuration in `backend/src/main/java/com/winecellar/config/SecurityConfig.java`
-- [ ] T011 [P] Create the user account MongoDB document with persisted password hash in `backend/src/main/java/com/winecellar/access/model/UserAccountDocument.java`
-- [ ] T012 [P] Create the account activation MongoDB document in `backend/src/main/java/com/winecellar/access/model/AccountActivationDocument.java`
-- [ ] T013 [P] Create the authenticated session MongoDB document in `backend/src/main/java/com/winecellar/access/model/AuthSessionDocument.java`
-- [ ] T014 [P] Create the identity access event MongoDB document in `backend/src/main/java/com/winecellar/access/model/AccessEventDocument.java`
-- [ ] T015 [P] Create the cellar MongoDB document in `backend/src/main/java/com/winecellar/cellar/model/CellarDocument.java`
-- [ ] T016 [P] Create the cellar membership MongoDB document in `backend/src/main/java/com/winecellar/cellar/model/CellarMembershipDocument.java`
-- [ ] T017 [P] Create shared backend API exception handling in `backend/src/main/java/com/winecellar/api/ApiExceptionHandler.java`
-- [ ] T018 [P] Create the frontend application router shell in `frontend/src/app/AppRouter.tsx`
-- [ ] T019 [P] Create the shared frontend auth client in `frontend/src/services/authClient.ts`
-- [ ] T020 Run the foundational phase test and validation steps documented in `specs/001-landing-auth-cellars/quickstart.md`
+- [X] T008 Create backend configuration for MongoDB, session cookie settings, and activation-link logging in `/workspaces/winecellar-spec-kit/backend/src/main/resources/application.yml`
+- [X] T009 [P] Implement shared backend error handling and API response models in `/workspaces/winecellar-spec-kit/backend/src/main/java/com/winecellar/shared/api/ApiExceptionHandler.java` and `/workspaces/winecellar-spec-kit/backend/src/main/java/com/winecellar/shared/api/ErrorResponse.java`
+- [X] T010 [P] Implement Spring Security baseline and auth filter chain in `/workspaces/winecellar-spec-kit/backend/src/main/java/com/winecellar/config/SecurityConfig.java`
+- [X] T011 [P] Implement backend persistence models and repositories for user accounts, activation tokens, sessions, memberships, cellars, and identity events in `/workspaces/winecellar-spec-kit/backend/src/main/java/com/winecellar/auth/` and `/workspaces/winecellar-spec-kit/backend/src/main/java/com/winecellar/cellar/`
+- [X] T012 [P] Implement the activation-delivery port and log-based adapter in `/workspaces/winecellar-spec-kit/backend/src/main/java/com/winecellar/auth/delivery/ActivationDeliveryPort.java` and `/workspaces/winecellar-spec-kit/backend/src/main/java/com/winecellar/auth/delivery/LoggingActivationDeliveryAdapter.java`
+- [X] T013 [P] Implement identity-event persistence and append service in `/workspaces/winecellar-spec-kit/backend/src/main/java/com/winecellar/auth/audit/IdentityAccessEventService.java`
+- [X] T014 [P] Translate `/workspaces/winecellar-spec-kit/design/design-system.json` into frontend tokens and global styles in `/workspaces/winecellar-spec-kit/frontend/src/styles/tokens.css` and `/workspaces/winecellar-spec-kit/frontend/src/styles/global.css`
+- [X] T015 [P] Implement shared frontend design-system components modeled on `frontend-template` patterns in `/workspaces/winecellar-spec-kit/frontend/src/components/ui/`
+- [X] T016 [P] Implement shared frontend API client, auth-state store, and route guard utilities in `/workspaces/winecellar-spec-kit/frontend/src/lib/api/client.ts`, `/workspaces/winecellar-spec-kit/frontend/src/lib/auth/auth-store.ts`, and `/workspaces/winecellar-spec-kit/frontend/src/routes/ProtectedRoute.tsx`
+- [X] T017 Create root verification scripts and command wiring for backend, frontend, and compose validation in `/workspaces/winecellar-spec-kit/package.json` or `/workspaces/winecellar-spec-kit/README.md`
 
-**Checkpoint**: Foundation ready - user story implementation can now begin in parallel
+**Checkpoint**: Foundation ready. User story phases can begin.
 
 ---
 
 ## Phase 3: User Story 1 - Discover the Product and Entry Paths (Priority: P1) 🎯 MVP
 
-**Goal**: Deliver the public start page so signed-out visitors can understand
-the product and navigate to registration or sign-in.
+**Goal**: Deliver the public start page with clear product messaging and working navigation to registration and sign-in.
 
-**Independent Test**: Open the public start page while signed out and verify
-the product explanation and navigation to registration and login work without
-depending on the protected cellar area.
+**Independent Test**: Open `/` while signed out and verify the page explains the product and exposes working links to `/register` and `/sign-in`.
 
-### Tests for User Story 1 ⚠️
+### Tests for User Story 1
 
-> **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
-
-- [ ] T021 [P] [US1] Create the landing page route test in `frontend/tests/routes/landing-page.test.tsx`
-- [ ] T022 [P] [US1] Create the public navigation end-to-end test in `frontend/tests/e2e/landing-navigation.spec.ts`
+- [X] T018 [P] [US1] Add frontend unit tests for landing-page CTA state and route links in `/workspaces/winecellar-spec-kit/frontend/src/features/landing/__tests__/LandingPage.test.tsx`
+- [X] T019 [P] [US1] Add frontend route integration test for signed-out public navigation in `/workspaces/winecellar-spec-kit/frontend/src/routes/__tests__/public-routes.test.tsx`
 
 ### Implementation for User Story 1
 
-- [ ] T023 [US1] Implement the public shell and top navigation in `frontend/src/components/layout/PublicShell.tsx`
-- [ ] T024 [US1] Implement the start page in `frontend/src/pages/StartPage.tsx`
-- [ ] T025 [US1] Wire the public routes `/`, `/register`, `/activate`, and `/sign-in` in `frontend/src/app/routes/publicRoutes.tsx`
-- [ ] T026 [US1] Add start page content and CTA copy definitions in `frontend/src/pages/startPageContent.ts`
-- [ ] T027 [US1] Run the User Story 1 validation steps in `specs/001-landing-auth-cellars/quickstart.md`
+- [X] T020 [P] [US1] Implement the public app header and navigation shell in `/workspaces/winecellar-spec-kit/frontend/src/components/layout/PublicHeader.tsx`
+- [X] T021 [P] [US1] Implement the landing hero, feature bands, and CTA sections in `/workspaces/winecellar-spec-kit/frontend/src/features/landing/LandingPage.tsx`
+- [X] T022 [US1] Wire the public routes for `/`, `/register`, and `/sign-in` in `/workspaces/winecellar-spec-kit/frontend/src/app/App.tsx`
+- [X] T023 [US1] Add landing-page content, terminology, and performance-safe asset usage aligned to the design system in `/workspaces/winecellar-spec-kit/frontend/src/features/landing/content.ts`
 
-**Checkpoint**: User Story 1 should be fully functional and testable independently
+**Checkpoint**: User Story 1 is complete and independently testable.
 
 ---
 
 ## Phase 4: User Story 2 - Register and Activate an Account (Priority: P2)
 
-**Goal**: Allow a new user to register, receive a 15-minute activation link,
-and activate the account before sign-in.
+**Goal**: Let a visitor register, receive a logged activation link valid for 15 minutes, and activate the account once.
 
-**Independent Test**: Submit the registration form, verify the activation link
-is issued and expires after 15 minutes, and confirm sign-in remains blocked
-until activation succeeds.
+**Independent Test**: Submit valid registration data, verify a pending account and activation token are created, copy the logged activation link from backend logs, and activate the account successfully within 15 minutes while expired and reused links are rejected.
 
-### Tests for User Story 2 ⚠️
+### Tests for User Story 2
 
-- [ ] T028 [P] [US2] Create the registration and activation contract test in `backend/src/test/java/com/winecellar/contracts/AuthRegistrationContractTest.java`
-- [ ] T029 [P] [US2] Create the registration and activation integration test with password-hash persistence checks in `backend/src/test/java/com/winecellar/access/AuthRegistrationIntegrationTest.java`
-- [ ] T030 [P] [US2] Create the frontend registration flow test in `frontend/tests/routes/registration-flow.test.tsx`
-- [ ] T031 [P] [US2] Create the identity event and activation email test in `backend/src/test/java/com/winecellar/access/RegistrationAuditAndEmailTest.java`
+- [X] T024 [P] [US2] Add backend unit tests for registration business rules, including duplicate-email rejection, in `/workspaces/winecellar-spec-kit/backend/src/test/java/com/winecellar/auth/application/RegistrationServiceTest.java`
+- [X] T025 [P] [US2] Add backend unit tests for activation-token issuance and validation rules in `/workspaces/winecellar-spec-kit/backend/src/test/java/com/winecellar/auth/application/ActivationServiceTest.java`
+- [X] T026 [P] [US2] Add backend unit tests for activation-link logging delivery in `/workspaces/winecellar-spec-kit/backend/src/test/java/com/winecellar/auth/delivery/LoggingActivationDeliveryAdapterTest.java`
+- [X] T027 [P] [US2] Add backend API integration tests for `/api/auth/register` and `/api/auth/activate` in `/workspaces/winecellar-spec-kit/backend/src/test/java/com/winecellar/auth/api/AuthRegistrationIntegrationTest.java`
+- [X] T028 [P] [US2] Add frontend unit tests for registration and activation page state handling in `/workspaces/winecellar-spec-kit/frontend/src/features/auth/__tests__/registration-flow.test.tsx`
 
 ### Implementation for User Story 2
 
-- [ ] T032 [P] [US2] Create the user account repository in `backend/src/main/java/com/winecellar/access/repository/UserAccountRepository.java`
-- [ ] T033 [P] [US2] Create the account activation repository in `backend/src/main/java/com/winecellar/access/repository/AccountActivationRepository.java`
-- [ ] T034 [P] [US2] Create the identity access event repository in `backend/src/main/java/com/winecellar/access/repository/AccessEventRepository.java`
-- [ ] T035 [US2] Implement activation email dispatch in `backend/src/main/java/com/winecellar/access/service/ActivationEmailService.java`
-- [ ] T036 [US2] Implement registration with password hashing, activation issuance, and audit events in `backend/src/main/java/com/winecellar/access/service/RegistrationService.java`
-- [ ] T037 [US2] Implement activation validation, completion, and audit events in `backend/src/main/java/com/winecellar/access/service/ActivationService.java`
-- [ ] T038 [US2] Implement the registration and activation API controller in `backend/src/main/java/com/winecellar/access/api/AuthRegistrationController.java`
-- [ ] T039 [US2] Implement the registration page on route `/register` in `frontend/src/pages/RegisterPage.tsx`
-- [ ] T040 [US2] Implement the activation result page on route `/activate` in `frontend/src/pages/ActivateAccountPage.tsx`
-- [ ] T041 [US2] Connect the registration UI to backend auth calls in `frontend/src/services/registerAccount.ts`
-- [ ] T042 [US2] Run the User Story 2 validation steps in `specs/001-landing-auth-cellars/quickstart.md`
+- [X] T029 [P] [US2] Implement auth domain models, DTOs, and mappers for `USER_ACCOUNT` and `ACCOUNT_ACTIVATION` in `/workspaces/winecellar-spec-kit/backend/src/main/java/com/winecellar/auth/domain/`
+- [X] T030 [P] [US2] Implement registration and activation application services in `/workspaces/winecellar-spec-kit/backend/src/main/java/com/winecellar/auth/application/RegistrationService.java` and `/workspaces/winecellar-spec-kit/backend/src/main/java/com/winecellar/auth/application/ActivationService.java`
+- [X] T031 [US2] Implement registration and activation API endpoints from the contract in `/workspaces/winecellar-spec-kit/backend/src/main/java/com/winecellar/auth/api/AuthController.java`
+- [X] T032 [US2] Implement identity-event emission for account registration and activation events in `/workspaces/winecellar-spec-kit/backend/src/main/java/com/winecellar/auth/audit/IdentityAccessEventService.java`
+- [X] T033 [P] [US2] Implement the registration page, form model, and success messaging in `/workspaces/winecellar-spec-kit/frontend/src/features/auth/RegisterPage.tsx`
+- [X] T034 [P] [US2] Implement the activation result page for success, expired, and already-used outcomes in `/workspaces/winecellar-spec-kit/frontend/src/features/auth/ActivatePage.tsx`
+- [X] T035 [US2] Wire frontend registration and activation API calls in `/workspaces/winecellar-spec-kit/frontend/src/features/auth/auth-api.ts`
+- [X] T036 [US2] Update frontend routing so `/register` and `/activate` work from the public shell in `/workspaces/winecellar-spec-kit/frontend/src/app/App.tsx`
 
-**Checkpoint**: User Stories 1 and 2 should both work independently
+**Checkpoint**: User Story 2 is complete and independently testable.
 
 ---
 
 ## Phase 5: User Story 3 - Sign In and Reach the Cellars Area (Priority: P3)
 
-**Goal**: Let an activated user sign in, maintain a 12-hour session, and reach
-the authenticated cellars page with either a cellar list or an empty state.
+**Goal**: Allow an activated user to sign in, maintain a 12-hour session, and access the protected cellars page with an empty state or membership-backed list.
 
-**Independent Test**: Sign in with an activated account, confirm the session is
-treated as valid for 12 hours, verify the cellars page requires authentication,
-and confirm the empty state appears when the user has no memberships.
+**Independent Test**: Sign in with an activated account, verify `/cellars` loads only when authenticated, confirm no-membership empty state renders correctly, and confirm expired sessions are denied.
 
-### Tests for User Story 3 ⚠️
+### Tests for User Story 3
 
-- [ ] T043 [P] [US3] Create the login-session-cellars contract test in `backend/src/test/java/com/winecellar/contracts/AuthSessionCellarsContractTest.java`
-- [ ] T044 [P] [US3] Create the login-session-cellars integration test with password-hash verification checks in `backend/src/test/java/com/winecellar/access/AuthSessionCellarsIntegrationTest.java`
-- [ ] T045 [P] [US3] Create the frontend login and protected routing test in `frontend/tests/routes/login-cellars-flow.test.tsx`
-- [ ] T046 [P] [US3] Create the login and session-end audit event test in `backend/src/test/java/com/winecellar/access/AuthAuditEventIntegrationTest.java`
+- [X] T037 [P] [US3] Add backend unit tests for sign-in, invalid-credential rejection, session expiry, and sign-out rules in `/workspaces/winecellar-spec-kit/backend/src/test/java/com/winecellar/auth/application/SessionServiceTest.java`
+- [X] T038 [P] [US3] Add backend unit tests for cellar membership authorization and cellar-summary reads in `/workspaces/winecellar-spec-kit/backend/src/test/java/com/winecellar/cellar/application/CellarQueryServiceTest.java`
+- [X] T039 [P] [US3] Add backend integration tests for `/api/auth/sign-in`, `/api/auth/sign-out`, `/api/auth/session`, and `/api/cellars` in `/workspaces/winecellar-spec-kit/backend/src/test/java/com/winecellar/auth/api/AuthSessionIntegrationTest.java`
+- [X] T040 [P] [US3] Add frontend unit tests for auth-store transitions, protected routes, and cellars empty-state view models in `/workspaces/winecellar-spec-kit/frontend/src/features/cellars/__tests__/cellars-auth-flow.test.tsx`
+- [X] T041 [P] [US3] Add frontend route integration tests for redirect-to-sign-in and authenticated cellar access in `/workspaces/winecellar-spec-kit/frontend/src/routes/__tests__/protected-routes.test.tsx`
 
 ### Implementation for User Story 3
 
-- [ ] T047 [P] [US3] Create the authenticated session repository in `backend/src/main/java/com/winecellar/access/repository/AuthSessionRepository.java`
-- [ ] T048 [P] [US3] Create the cellar repository in `backend/src/main/java/com/winecellar/cellar/repository/CellarRepository.java`
-- [ ] T049 [P] [US3] Create the cellar membership repository in `backend/src/main/java/com/winecellar/cellar/repository/CellarMembershipRepository.java`
-- [ ] T050 [US3] Implement login with password-hash verification and session lifecycle audit events in `backend/src/main/java/com/winecellar/access/service/LoginService.java`
-- [ ] T051 [US3] Implement cellar summary retrieval for authenticated users in `backend/src/main/java/com/winecellar/cellar/service/CellarSummaryService.java`
-- [ ] T052 [US3] Implement the login and session inspection API controller in `backend/src/main/java/com/winecellar/access/api/AuthSessionController.java`
-- [ ] T053 [US3] Implement the cellars listing API controller in `backend/src/main/java/com/winecellar/cellar/api/CellarsController.java`
-- [ ] T054 [US3] Implement the login page on route `/sign-in` in `frontend/src/pages/LoginPage.tsx`
-- [ ] T055 [US3] Implement the authenticated session store and protected route gate in `frontend/src/services/sessionStore.ts`
-- [ ] T056 [US3] Implement the cellars page on route `/cellars` with list and empty state handling in `frontend/src/pages/CellarsPage.tsx`
-- [ ] T057 [US3] Run the User Story 3 validation steps in `specs/001-landing-auth-cellars/quickstart.md`
+- [X] T042 [P] [US3] Implement authenticated session domain models and session application services in `/workspaces/winecellar-spec-kit/backend/src/main/java/com/winecellar/auth/application/SessionService.java`
+- [X] T043 [P] [US3] Implement cellar summary query service and membership-backed read model in `/workspaces/winecellar-spec-kit/backend/src/main/java/com/winecellar/cellar/application/CellarQueryService.java`
+- [X] T044 [US3] Extend the auth API with sign-in, sign-out, and current-session endpoints in `/workspaces/winecellar-spec-kit/backend/src/main/java/com/winecellar/auth/api/AuthController.java`
+- [X] T045 [US3] Implement the `/api/cellars` endpoint from the contract in `/workspaces/winecellar-spec-kit/backend/src/main/java/com/winecellar/cellar/api/CellarController.java`
+- [X] T046 [US3] Emit identity events for sign-in success/failure and session-ended outcomes in `/workspaces/winecellar-spec-kit/backend/src/main/java/com/winecellar/auth/audit/IdentityAccessEventService.java`
+- [X] T047 [P] [US3] Implement the sign-in page and sign-in form UX in `/workspaces/winecellar-spec-kit/frontend/src/features/auth/SignInPage.tsx`
+- [X] T048 [P] [US3] Implement the authenticated cellars page, empty state, and cellar card list in `/workspaces/winecellar-spec-kit/frontend/src/features/cellars/CellarsPage.tsx`
+- [X] T049 [US3] Implement frontend session bootstrap, sign-in, sign-out, and cellar-loading hooks in `/workspaces/winecellar-spec-kit/frontend/src/lib/auth/auth-store.ts` and `/workspaces/winecellar-spec-kit/frontend/src/features/cellars/useCellarsQuery.ts`
+- [X] T050 [US3] Wire protected routing and redirect behavior for `/cellars` in `/workspaces/winecellar-spec-kit/frontend/src/app/App.tsx`
 
-**Checkpoint**: All user stories should now be independently functional
+**Checkpoint**: User Story 3 is complete and independently testable.
 
 ---
 
 ## Phase 6: Polish & Cross-Cutting Concerns
 
-**Purpose**: Improvements that affect multiple user stories
+**Purpose**: Final hardening, contract alignment, performance verification, and documentation.
 
-- [ ] T058 [P] Add end-to-end coverage for the full auth-to-cellars journey in `frontend/tests/e2e/auth-cellars-journey.spec.ts`
-- [ ] T059 [P] Add backend performance verification for registration, activation, login, and cellar listing in `backend/src/test/java/com/winecellar/performance/AuthCellarsPerformanceTest.java`
-- [ ] T060 [P] Add frontend performance verification for landing and cellars page rendering in `frontend/tests/performance/page-render.performance.test.tsx`
-- [ ] T061 [P] Refine page-level UX consistency and shared interaction states in `frontend/src/components/layout/PublicShell.tsx`
-- [ ] T062 Harden activation expiry and session expiry enforcement in `backend/src/main/java/com/winecellar/config/SecurityConfig.java`
-- [ ] T063 [P] Update implementation and validation notes in `specs/001-landing-auth-cellars/quickstart.md`
-- [ ] T064 Run the full feature validation checklist in `specs/001-landing-auth-cellars/quickstart.md`
+- [X] T051 [P] Validate the OpenAPI contract against the implemented controllers in `/workspaces/winecellar-spec-kit/specs/001-landing-auth-cellars/contracts/openapi.yaml`
+- [ ] T052 [P] Add backend and frontend performance checks for landing render, auth response time, activation-link generation logging, and cellar-list loading against the thresholds in `/workspaces/winecellar-spec-kit/specs/001-landing-auth-cellars/plan.md`
+- [ ] T053 Verify Docker Compose local runtime, activation-link logging, and end-to-end smoke flow in `/workspaces/winecellar-spec-kit/docker-compose.yml`
+- [X] T054 [P] Update implementation documentation and local run instructions in `/workspaces/winecellar-spec-kit/README.md`
+- [ ] T055 Perform cross-cutting cleanup for UX consistency, error copy, and security headers in `/workspaces/winecellar-spec-kit/backend/src/main/java/com/winecellar/` and `/workspaces/winecellar-spec-kit/frontend/src/`
 
 ---
 
@@ -175,88 +139,73 @@ and confirm the empty state appears when the user has no memberships.
 
 ### Phase Dependencies
 
-- **Setup (Phase 1)**: No dependencies - can start immediately
-- **Foundational (Phase 2)**: Depends on Setup completion - BLOCKS all user stories
-- **User Story 1 (Phase 3)**: Depends on Foundational completion
-- **User Story 2 (Phase 4)**: Depends on Foundational completion
-- **User Story 3 (Phase 5)**: Depends on Foundational completion
-- **Polish (Phase 6)**: Depends on all desired user stories being complete
+- **Phase 1: Setup** has no dependencies and starts immediately.
+- **Phase 2: Foundational** depends on Phase 1 and blocks all user story work.
+- **Phase 3: US1** depends on Phase 2.
+- **Phase 4: US2** depends on Phase 2 and can proceed after US1, though the recommended order is P1 then P2.
+- **Phase 5: US3** depends on Phase 2 and on the auth artifacts delivered by US2.
+- **Phase 6: Polish** depends on the stories you intend to ship being complete.
 
 ### User Story Dependencies
 
-- **User Story 1 (P1)**: Can start after Foundational - no dependencies on other stories
-- **User Story 2 (P2)**: Can start after Foundational - independent of User Story 1 except for shared routing shell
-- **User Story 3 (P3)**: Can start after Foundational - independent testability should use seeded active-account fixtures rather than depending on User Story 2 runtime flows
+- **US1 (P1)**: independent after foundational setup.
+- **US2 (P2)**: independent from US1 for backend behavior, but shares frontend shell components created earlier.
+- **US3 (P3)**: depends on US2 because sign-in requires activated accounts and the session/auth APIs.
 
 ### Within Each User Story
 
-- Tests MUST be written and FAIL before implementation unless the specification documents a justified exception
-- Persistence and model support before services
-- Services before controllers and pages
-- Backend interfaces before frontend wiring
-- Story-specific validation before moving to the next priority
+- Unit and integration tests should be written before or alongside implementation and must fail before the corresponding behavior is implemented.
+- Backend domain/application services should precede controller wiring.
+- Frontend state and API hooks should precede final page route wiring.
 
 ### Parallel Opportunities
 
-- T003, T004, and T005 can run in parallel during setup
-- T010 through T019 can run in parallel during foundational work once T009 starts the backend/frontend skeleton
-- T021 and T022 can run in parallel for User Story 1
-- T028 through T031 can run in parallel for User Story 2 test coverage
-- T032, T033, and T034 can run in parallel before service implementation for User Story 2
-- T043 through T046 can run in parallel for User Story 3 test coverage
-- T047, T048, and T049 can run in parallel before service implementation for User Story 3
-- T058, T059, T060, T061, and T063 can run in parallel during polish
+- `T003` to `T006` can run in parallel during setup.
+- `T009` to `T016` can run in parallel within the foundational phase once directories exist.
+- In US2, `T024` to `T028` can run in parallel, followed by `T029`, `T030`, `T033`, and `T034`.
+- In US3, `T037` to `T041` can run in parallel, followed by `T042`, `T043`, `T047`, and `T048`.
+- Polish tasks `T051`, `T052`, and `T054` can run in parallel after core implementation stabilizes.
 
 ---
 
 ## Parallel Example: User Story 2
 
 ```bash
-# Launch all User Story 2 tests together:
-Task: "Create the registration and activation contract test in backend/src/test/java/com/winecellar/contracts/AuthRegistrationContractTest.java"
-Task: "Create the registration and activation integration test in backend/src/test/java/com/winecellar/access/AuthRegistrationIntegrationTest.java"
-Task: "Create the frontend registration flow test in frontend/tests/routes/registration-flow.test.tsx"
-Task: "Create the identity event and activation email test in backend/src/test/java/com/winecellar/access/RegistrationAuditAndEmailTest.java"
+Task: "Add backend unit tests for registration business rules in /workspaces/winecellar-spec-kit/backend/src/test/java/com/winecellar/auth/application/RegistrationServiceTest.java"
+Task: "Add backend unit tests for activation-token issuance and validation rules in /workspaces/winecellar-spec-kit/backend/src/test/java/com/winecellar/auth/application/ActivationServiceTest.java"
+Task: "Add frontend unit tests for registration and activation page state handling in /workspaces/winecellar-spec-kit/frontend/src/features/auth/__tests__/registration-flow.test.tsx"
+```
 
-# Launch the persistence layer tasks together:
-Task: "Create the user account repository in backend/src/main/java/com/winecellar/access/repository/UserAccountRepository.java"
-Task: "Create the account activation repository in backend/src/main/java/com/winecellar/access/repository/AccountActivationRepository.java"
-Task: "Create the identity access event repository in backend/src/main/java/com/winecellar/access/repository/AccessEventRepository.java"
+## Parallel Example: User Story 3
+
+```bash
+Task: "Implement authenticated session domain models and session application services in /workspaces/winecellar-spec-kit/backend/src/main/java/com/winecellar/auth/application/SessionService.java"
+Task: "Implement cellar summary query service and membership-backed read model in /workspaces/winecellar-spec-kit/backend/src/main/java/com/winecellar/cellar/application/CellarQueryService.java"
+Task: "Implement the authenticated cellars page, empty state, and cellar card list in /workspaces/winecellar-spec-kit/frontend/src/features/cellars/CellarsPage.tsx"
 ```
 
 ---
 
 ## Implementation Strategy
 
-### MVP First (User Story 1 Only)
+### MVP First
 
-1. Complete Phase 1: Setup
-2. Complete Phase 2: Foundational
-3. Complete Phase 3: User Story 1
-4. Stop and validate the public start page flow
-5. Demo the public entry experience before moving to auth flows
+1. Complete Phase 1 and Phase 2.
+2. Deliver Phase 3 to establish the public landing and entry paths.
+3. Validate US1 independently before moving on.
 
 ### Incremental Delivery
 
-1. Complete Setup + Foundational to establish backend/frontend infrastructure
-2. Add User Story 1 and validate public entry
-3. Add User Story 2 and validate registration + activation
-4. Add User Story 3 and validate authenticated access to cellars
-5. Finish with full-journey polish and regression coverage
+1. Add US2 to deliver account creation and activation.
+2. Add US3 to deliver protected sign-in and cellar access.
+3. Finish with Phase 6 hardening and Compose verification.
 
 ### Suggested MVP Scope
 
-The recommended MVP is **User Story 1** only after Setup and Foundational work.
-It delivers a usable public entry point without committing yet to auth and
-protected access behavior.
-
----
+- Recommended MVP for the first demo: **US1 only**
+- Recommended first end-to-end authenticated milestone: **US1 + US2 + US3**
 
 ## Notes
 
-- [P] tasks = different files, no dependencies
-- [Story] label maps task to a specific user story for traceability
-- Each user story is independently completable and testable
-- Every phase ends with an explicit validation task before the next phase begins
-- Keep domain terms aligned with the sitemap, contracts, and constitution
-- Do not defer expiry handling, protected-route behavior, or auth regressions to a later phase
+- No separate frontend refactor phase was added because the planned implementation creates a new `/frontend` app rather than refactoring an existing production frontend; `frontend-template` is used as a structural reference only.
+- The constitutional exception for `USER_ACCOUNT` audit-event primary targets must remain visible during implementation and review.

@@ -1,197 +1,247 @@
 # Data Model: Landing, Registration, Login, and Cellars
 
-## Scope
+## Information Model Scope
 
-This data model covers only the aggregates needed for the first feature slice:
-public account registration, email activation, authenticated sessions,
-identity access-history events, and the authenticated cellars landing page.
+This feature covers identity and access foundations plus the authenticated
+cellar landing page. It reads cellar collaboration data through
+`CELLAR_MEMBERSHIP` but does not create or modify cellar-sharing rules.
 
-The model follows the information model in
-`docs/architecture/information-model.mmd` while adapting it for MongoDB 8 using
-document-database principles:
+## Entities
 
-- separate aggregates for independently changing concepts
-- embedding only where lifecycle and write ownership are aligned
-- explicit references where relationships cross aggregate boundaries
-- no collapse of distinct domain concepts for storage convenience
+### `USER_ACCOUNT`
 
-## Aggregate Overview
+- Purpose: person who can register, activate, sign in, and access cellars
+- Core fields:
+  - `id`
+  - `email`
+  - `passwordHash`
+  - `displayName`
+  - `status` = `PENDING_ACTIVATION | ACTIVE | DISABLED`
+  - `createdAt`
+  - `activatedAt` nullable
+- Validation:
+  - `email` must be unique and normalized
+  - `passwordHash` is required after successful registration
+  - `activatedAt` is required when `status = ACTIVE`
+- Nullable justification:
+  - `activatedAt` is null while the account is pending activation
 
-### USER_ACCOUNT
+### `ACCOUNT_ACTIVATION`
 
-Represents an individual user who can register, activate an account, sign in,
-and access cellars through memberships.
+- Purpose: single-use activation grant for one pending account
+- Core fields:
+  - `id`
+  - `userAccountId`
+  - `tokenHash`
+  - `issuedAt`
+  - `expiresAt`
+  - `consumedAt` nullable
+  - `deliveryStatus`
+- Validation:
+  - exactly one active unused token per pending account at a time
+  - `expiresAt = issuedAt + 15 minutes`
+  - token cannot be consumed after expiry
+- Nullable justification:
+  - `consumedAt` is null until the link is used
 
-**Collection**: `user_accounts`
+### `AUTHENTICATED_SESSION`
 
-**Fields**:
+- Purpose: server-side representation of a signed-in browser session
+- Core fields:
+  - `id`
+  - `userAccountId`
+  - `issuedAt`
+  - `expiresAt`
+  - `endedAt` nullable
+  - `endReason` nullable = `SIGN_OUT | EXPIRED | REVOKED`
+  - `clientMetadata`
+- Validation:
+  - `expiresAt = issuedAt + 12 hours`
+  - session is valid only when `endedAt` is null and `expiresAt` is in the
+    future
+- Nullable justification:
+  - `endedAt` and `endReason` are null while the session remains active
 
-- `id`: string, primary identifier
-- `username`: string, unique login/display identifier if used by the product
-- `email`: string, unique normalized email address
-- `passwordHash`: string, derived from the user-provided password and stored
-  instead of the plaintext password
-- `displayName`: string
-- `status`: enum `PENDING_ACTIVATION | ACTIVE | DISABLED`
-- `createdAt`: datetime
-- `activatedAt`: datetime nullable, justified because the account may remain
-  pending until activation completes
+### `CELLAR`
 
-**Validation rules**:
+- Purpose: shared cellar container already defined in the canonical information
+  model; used here only as a readable destination for signed-in users
+- Core fields used by this feature:
+  - `id`
+  - `name`
+  - `location`
+  - `description`
+  - `createdAt`
 
-- `email` must be unique
-- `passwordHash` must always be present for password-based accounts
-- plaintext passwords must never be persisted in `USER_ACCOUNT`
-- `status` must start as `PENDING_ACTIVATION` after successful registration
-- `activatedAt` must be present only when `status = ACTIVE`
+### `CELLAR_MEMBERSHIP`
 
-### ACCOUNT_ACTIVATION
+- Purpose: cellar-level access grant linking one user to one cellar with one
+  explicit role
+- Core fields:
+  - `id`
+  - `userId`
+  - `cellarId`
+  - `role` = `OWNER | CONTRIBUTOR | VIEWER`
+  - `grantedAt`
+  - `grantedByUserId`
+- Validation:
+  - unique pair of `userId + cellarId`
+  - role is required and governs cellar visibility
 
-Represents a single activation link issuance for a pending account.
+### `CELLAR_SUMMARY`
 
-**Collection**: `account_activations`
+- Purpose: read model returned to the `/cellars` page
+- Core fields:
+  - `cellarId`
+  - `name`
+  - `location`
+  - `description`
+  - `memberRole`
+  - `bottleCount` nullable
+  - `recentActivityAt` nullable
+- Validation:
+  - returned only when a matching `CELLAR_MEMBERSHIP` exists
+- Nullable justification:
+  - `bottleCount` can be absent until inventory counting is implemented
+  - `recentActivityAt` can be absent when no cellar activity exists yet
 
-**Fields**:
+### `IDENTITY_ACCESS_EVENT`
 
-- `id`: string, primary identifier
-- `userAccountId`: string, reference to `USER_ACCOUNT`
-- `tokenHash`: string
-- `issuedAt`: datetime
-- `expiresAt`: datetime
-- `usedAt`: datetime nullable, justified because the link may expire unused
-- `status`: enum `PENDING | USED | EXPIRED | SUPERSEDED`
+- Purpose: immutable audit trail for registration, activation, sign-in, and
+  session termination
+- Core fields:
+  - `id`
+  - `actorUserId` nullable for unauthenticated attempts
+  - `subjectUserAccountId`
+  - `eventType` =
+    `ACCOUNT_REGISTERED | ACTIVATION_ISSUED | ACTIVATION_SUCCEEDED | ACTIVATION_REJECTED | SIGN_IN_SUCCEEDED | SIGN_IN_FAILED | SESSION_ENDED`
+  - `occurredAt`
+  - `primaryTargetType`
+  - `primaryTargetId`
+  - `metadata`
+- Validation:
+  - one explicit primary target per event
+  - `SESSION_ENDED` metadata includes `endReason`
+- Nullable justification:
+  - `actorUserId` is null for unauthenticated registration and failed login
+    attempts before identity is established
+- Constitutional note:
+  - this feature needs an approved exception or amendment so
+    `primaryTargetType = USER_ACCOUNT` is valid for identity events
 
-**Validation rules**:
+## Relationships
 
-- `expiresAt` must equal `issuedAt + 15 minutes`
-- only one valid pending activation may exist per user account at a time
-- `usedAt` must be present only when `status = USED`
+- `USER_ACCOUNT` 1 to many `ACCOUNT_ACTIVATION`
+- `USER_ACCOUNT` 1 to many `AUTHENTICATED_SESSION`
+- `USER_ACCOUNT` 1 to many `CELLAR_MEMBERSHIP`
+- `CELLAR` 1 to many `CELLAR_MEMBERSHIP`
+- `CELLAR_MEMBERSHIP` many to 1 `CELLAR`
+- `CELLAR_SUMMARY` is derived from `CELLAR` joined with `CELLAR_MEMBERSHIP`
+- `USER_ACCOUNT` 1 to many `IDENTITY_ACCESS_EVENT` as subject
 
-### AUTH_SESSION
+## Role Model And Permission Effects
 
-Represents a successful authenticated session for an active account.
+This feature touches collaboration because cellar visibility is membership-based.
 
-**Collection**: `auth_sessions`
+- `OWNER`: can view `/cellars`; cellar cards returned for owned cellars
+- `CONTRIBUTOR`: can view `/cellars`; cellar cards returned for contributed
+  cellars
+- `VIEWER`: can view `/cellars`; cellar cards returned for viewed cellars
+- Sharing behavior is unchanged in this feature; no new membership mutation is
+  introduced
 
-**Fields**:
+## Event Model
 
-- `id`: string, primary identifier
-- `userAccountId`: string, reference to `USER_ACCOUNT`
-- `issuedAt`: datetime
-- `expiresAt`: datetime
-- `revokedAt`: datetime nullable, justified because a session may expire
-  naturally without manual revocation
-- `status`: enum `ACTIVE | EXPIRED | REVOKED`
+| Event Type | When Created | Primary Target | Required Metadata |
+|------------|--------------|----------------|-------------------|
+| `ACCOUNT_REGISTERED` | Pending account created | `USER_ACCOUNT` | normalized email |
+| `ACTIVATION_ISSUED` | Activation token persisted and email dispatch requested | `USER_ACCOUNT` | activation id, expires at |
+| `ACTIVATION_SUCCEEDED` | Valid activation link consumed | `USER_ACCOUNT` | activation id |
+| `ACTIVATION_REJECTED` | Expired, invalid, or reused link submitted | `USER_ACCOUNT` when known, otherwise token hash | rejection reason |
+| `SIGN_IN_SUCCEEDED` | Credentials accepted and session issued | `USER_ACCOUNT` | session id, expires at |
+| `SIGN_IN_FAILED` | Credentials rejected or account inactive | `USER_ACCOUNT` when known, otherwise normalized email | rejection reason |
+| `SESSION_ENDED` | Sign-out, expiry, or revocation ends a session | `USER_ACCOUNT` | session id, end reason |
 
-**Validation rules**:
+## MongoDB Collection Design
 
-- `expiresAt` must equal `issuedAt + 12 hours`
-- only active accounts may receive new sessions
-- access checks must reject sessions when current time is after `expiresAt`
+### `user_accounts`
 
-### ACCESS_EVENT
+- Aggregate root: `USER_ACCOUNT`
+- Indexes:
+  - unique `email`
+  - `status, email`
 
-Represents an auditable identity/access history record for a single completed
-state-changing auth action.
+### `account_activation_tokens`
 
-**Collection**: `access_events`
+- Aggregate root: `ACCOUNT_ACTIVATION`
+- Indexes:
+  - unique `userAccountId` for active unused token enforcement
+  - `expiresAt`
+  - unique `tokenHash`
+- Lifecycle:
+  - expired rows may be cleaned asynchronously after they are no longer needed
+    for audit lookups
 
-**Fields**:
+### `authenticated_sessions`
 
-- `id`: string, primary identifier
-- `actorUserId`: string nullable, justified because pre-activation or failed
-  sign-in events may not always resolve to an active account identifier
-- `eventType`: enum `ACCOUNT_REGISTERED | ACTIVATION_ISSUED | ACCOUNT_ACTIVATED | SIGN_IN_SUCCEEDED | SIGN_IN_FAILED | SESSION_ENDED`
-- `targetType`: enum `USER_ACCOUNT | ACCOUNT_ACTIVATION | AUTH_SESSION`
-- `targetId`: string
-- `occurredAt`: datetime
-- `metadata`: object nullable, justified because some event types need details
-  such as email address, expiry reason, or failure category while others do not
+- Aggregate root: `AUTHENTICATED_SESSION`
+- Indexes:
+  - `userAccountId, expiresAt`
+  - unique session identifier
+  - TTL-compatible cleanup index on `expiresAt` or `endedAt`
 
-**Validation rules**:
+### `cellars`
 
-- every event must have exactly one primary target through `targetType` and
-  `targetId`
-- `occurredAt` must be immutable after creation
-- `metadata` must not duplicate canonical domain concepts already modeled
+- Existing aggregate root from canonical model
+- Read pattern for this feature:
+  - resolve cellar summaries by membership-owned `cellarId`
 
-### CELLAR
+### `cellar_memberships`
 
-Represents a cellar that may later contain inventory and structure. For this
-feature, only summary fields are required for the cellars landing page.
+- Aggregate root: `CELLAR_MEMBERSHIP`
+- Indexes:
+  - unique `userId, cellarId`
+  - `userId, role`
+  - `cellarId, role`
+- Denormalization option:
+  - store a small cellar summary snapshot for faster `/cellars` reads if needed
+    later; do not denormalize now without measurement
 
-**Collection**: `cellars`
+### `identity_access_events`
 
-**Fields**:
+- Aggregate root: `IDENTITY_ACCESS_EVENT`
+- Indexes:
+  - `subjectUserAccountId, occurredAt desc`
+  - `eventType, occurredAt desc`
 
-- `id`: string, primary identifier
-- `name`: string
-- `location`: string nullable, justified because the information model allows a
-  cellar to exist without a physical location description
-- `description`: string nullable, justified because summary text is optional
-- `createdAt`: datetime
+## State Transitions
 
-### CELLAR_MEMBERSHIP
+### Account lifecycle
 
-Connects a user to a cellar with an explicit cellar-level role.
+1. Registration creates `USER_ACCOUNT(status = PENDING_ACTIVATION)`
+2. Activation link validation within 15 minutes marks activation consumed
+3. Account becomes `ACTIVE`
 
-**Collection**: `cellar_memberships`
+### Session lifecycle
 
-**Fields**:
+1. Successful sign-in creates `AUTHENTICATED_SESSION`
+2. Session remains valid until sign-out, revocation, or 12-hour expiry
+3. Ended session records `endedAt` and `endReason`
 
-- `id`: string, primary identifier
-- `userAccountId`: string, reference to `USER_ACCOUNT`
-- `cellarId`: string, reference to `CELLAR`
-- `role`: enum `OWNER | CONTRIBUTOR | VIEWER`
-- `grantedAt`: datetime
-- `grantedByUserId`: string nullable, justified because the very first owner
-  relationship may be system-created during cellar creation in a later feature
+## Read Models
 
-**Validation rules**:
+### Cellars page
 
-- `role` must always be present
-- the same user must not have duplicate active memberships for the same cellar
+- Query memberships by current `userId`
+- Join to `cellars`
+- Return ordered `CELLAR_SUMMARY[]`
+- If no memberships exist, return an empty list and let the frontend show the
+  empty state
 
-## Query Shapes
+## Performance Notes
 
-### Registration
-
-- Derive `passwordHash` from the submitted password
-- Create `USER_ACCOUNT` with `status = PENDING_ACTIVATION`
-- Create `ACCOUNT_ACTIVATION` with 15-minute expiry
-- Create `ACCESS_EVENT` records for `ACCOUNT_REGISTERED` and
-  `ACTIVATION_ISSUED`
-
-### Activation
-
-- Look up activation by token
-- Validate `status = PENDING` and `expiresAt > now`
-- Mark activation as `USED`
-- Update `USER_ACCOUNT.status` to `ACTIVE`
-- Create `ACCESS_EVENT` for `ACCOUNT_ACTIVATED`
-
-### Login
-
-- Validate account is `ACTIVE`
-- Verify the submitted password against `USER_ACCOUNT.passwordHash`
-- Create `AUTH_SESSION` with `expiresAt = issuedAt + 12 hours`
-- Create `ACCESS_EVENT` for `SIGN_IN_SUCCEEDED` or `SIGN_IN_FAILED`
-
-### Cellars Landing Page
-
-- Resolve current session to `USER_ACCOUNT`
-- Query `CELLAR_MEMBERSHIP` by `userAccountId`
-- Fetch matching `CELLAR` summaries by referenced IDs
-- Return empty state when membership query returns no results
-
-### Session End
-
-- Resolve session end by expiry, revocation, or explicit sign-out
-- Update `AUTH_SESSION.status`
-- Create `ACCESS_EVENT` for `SESSION_ENDED`
-
-## Event Considerations
-
-The broader constitution requires history to be first-class. This feature
-implements identity/access audit history through `ACCESS_EVENT` while leaving
-cellar-domain events separate from the information model’s `EVENT` entity.
+- `/cellars` must use indexed membership lookup first, not full-cellar scans
+- session validation should resolve with one indexed session lookup and one
+  optional account status lookup
+- registration and sign-in event writes should be append-only and non-blocking
+  relative to response generation where practical

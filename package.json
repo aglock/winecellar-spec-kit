@@ -1,0 +1,10 @@
+{
+  "name": "winecellar-spec-kit",
+  "private": true,
+  "scripts": {
+    "test": "mvn -f backend/pom.xml test && npm --prefix frontend test && npm --prefix frontend run lint",
+    "test:backend": "mvn -f backend/pom.xml test",
+    "test:frontend": "npm --prefix frontend test && npm --prefix frontend run lint",
+    "compose:check": "docker compose config"
+  }
+}

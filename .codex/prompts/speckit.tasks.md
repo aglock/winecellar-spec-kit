@@ -64,6 +64,7 @@ You **MUST** consider the user input before proceeding (if not empty).
 
 3. **Execute task generation workflow**:
    - Load plan.md and extract tech stack, libraries, project structure
+   - If plan.md defines `design/design-system.json` as the UI design source, add explicit frontend refactor work to align the existing frontend with that guidance before any Phase 6 work begins
    - Load spec.md and extract user stories with their priorities (P1, P2, P3, etc.)
    - If data-model.md exists: Extract entities and map to user stories
    - If contracts/ exists: Map interface contracts to user stories
@@ -78,6 +79,7 @@ You **MUST** consider the user input before proceeding (if not empty).
    - Phase 1: Setup tasks (project initialization)
    - Phase 2: Foundational tasks (blocking prerequisites for all user stories)
    - Phase 3+: One phase per user story (in priority order from spec.md)
+   - Insert a dedicated frontend refactor phase before Phase 6 whenever the plan requires UI conformance to `design/design-system.json` and existing frontend code must be brought into alignment
    - Each phase includes: story goal, independent test criteria, tests (if requested), implementation tasks
    - Final Phase: Polish & cross-cutting concerns
    - All tasks must follow the strict checklist format (see Task Generation Rules below)
@@ -188,12 +190,14 @@ Every task MUST strictly follow this format:
 4. **From Setup/Infrastructure**:
    - Shared infrastructure → Setup phase (Phase 1)
    - Foundational/blocking tasks → Foundational phase (Phase 2)
+   - Existing frontend redesign or UI-conformance refactor required by plan.md → dedicated blocking phase before any later feature phase that depends on the new UI baseline, and explicitly before Phase 6 if Phase 6 exists
    - Story-specific setup → within that story's phase
 
 ### Phase Structure
 
 - **Phase 1**: Setup (project initialization)
 - **Phase 2**: Foundational (blocking prerequisites - MUST complete before user stories)
+- **Frontend Refactor Gate**: If plan.md requires alignment to `design/design-system.json` and the current frontend needs refactoring, insert a dedicated phase before Phase 6 and make later UI work depend on it
 - **Phase 3+**: User Stories in priority order (P1, P2, P3...)
   - Within each story: Tests (if requested) → Models → Services → Endpoints → Integration
   - Each phase should be a complete, independently testable increment

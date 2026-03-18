@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: winecellar-backend
+  data:
+    mongodb:
+      uri: ${SPRING_DATA_MONGODB_URI:${MONGODB_URI:mongodb://localhost:27017/winecellar}}
+server:
+  port: ${SERVER_PORT:8080}
+
+winecellar:
+  auth:
+    session-cookie-name: ${WC_SESSION_COOKIE:WC_SESSION}
+    session-duration-hours: 12
+    activation-link-ttl-minutes: 15
+  frontend:
+    base-url: ${WC_FRONTEND_BASE_URL:http://localhost:5173}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
