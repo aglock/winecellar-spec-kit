@@ -1,0 +1,73 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+:root {
+  font-family: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #F5F1EA;
+  color: #24191A;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Typography utility classes */
+.display-xl {
+  @apply font-display text-display-xl;
+}
+
+.display-lg {
+  @apply font-display text-display-lg;
+}
+
+.heading-xl {
+  @apply font-body font-semibold text-heading-xl;
+}
+
+.heading-lg {
+  @apply font-body font-semibold text-heading-lg;
+}
+
+.heading-md {
+  @apply font-body font-semibold text-heading-md;
+}
+
+.heading-sm {
+  @apply font-body font-semibold text-heading-sm;
+}
+
+.title {
+  @apply font-body font-semibold text-title;
+}
+
+.body-lg {
+  @apply font-body text-body-lg;
+}
+
+.body-md {
+  @apply font-body text-body-md;
+}
+
+.body-sm {
+  @apply font-body text-body-sm;
+}
+
+.label {
+  @apply font-body uppercase font-semibold text-label tracking-wider;
+}

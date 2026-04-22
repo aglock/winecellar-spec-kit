@@ -1,15 +1,19 @@
 <!--
 Sync Impact Report
-- Version change: 1.2.0 -> 1.3.0
-- Modified principles: IV. Evented Audit Trail expanded; V. Canonical Reference Data, Geographic Consistency, And Readable Implementation expanded
-- Added sections: VI. Code Quality And Maintainability; VII. Testing Standards; VIII. User Experience Consistency; IX. Performance As A Requirement
+- Version change: 1.3.0 -> 1.4.0
+- Modified principles:
+  - V renamed from "Canonical Reference Data, Geographic Consistency, And Readable Implementation" to
+    "Domain Model Fidelity And Canonical Concepts"; heading now reflects the principle's core intent
+    (domain model faithfulness to the information model and reuse of canonical types); duplicated
+    implementation guidance removed (consolidated into Principle VI)
+  - VI expanded to explicitly reference domain-driven design principles
+- Added sections: none
 - Removed sections: none
 - Templates requiring updates:
-  - ⚠ review /workspaces/winecellar-spec-kit/.specify/templates/plan-template.md for event target wording if constitution-derived text is regenerated
-  - ⚠ review /workspaces/winecellar-spec-kit/.specify/templates/spec-template.md for event target wording if constitution-derived text is regenerated
-  - ⚠ review /workspaces/winecellar-spec-kit/.codex/prompts/speckit.constitution.md if constitution summaries are regenerated
-- Follow-up TODOs:
-  - reconcile existing specs that documented `USER_ACCOUNT` event targets as temporary exceptions
+  - ✅ .specify/templates/plan-template.md — constitution check already covers testing, UX, performance
+  - ✅ .specify/templates/spec-template.md — no principle-driven sections changed
+  - ✅ .specify/templates/tasks-template.md — no task categories changed
+- Follow-up TODOs: none
 -->
 
 # winecellar-spec-kit Constitution
@@ -59,7 +63,7 @@ such as source and destination compartments for a move, but the primary target
 MUST remain singular and explicit. Specifications MUST NOT rely on inferred
 history from current state alone.
 
-### V. Canonical Reference Data, Geographic Consistency, And Readable Implementation
+### V. Domain Model Fidelity And Canonical Concepts
 The model MUST reuse canonical domain concepts instead of introducing parallel
 text fields for the same meaning. Geographic modeling MUST use the shared
 concepts `COUNTRY`, `REGION`, and `APPELLATION` consistently across wines,
@@ -68,20 +72,18 @@ grapes, and related reference data. `APPELLATION` is optional for a wine. When
 MUST align with `docs/resources/grapes-masterlist.json`, and a grape's classic
 regions MUST reference the same `REGION` concept used everywhere else. Classic
 regions MUST NOT be modeled as unconstrained free text in the information
-model. Implementation work derived from this model MUST adhere to
-domain-driven design principles, clean code, and clean architecture. Code MUST
-optimize for human readability and maintainability over brevity, dense
-abstraction, or clever but opaque patterns.
+model.
 
 ### VI. Code Quality And Maintainability
 Code quality is a governing concern, not a cleanup task. Implementations MUST
-make domain intent obvious to a human reader through clear naming, cohesive
-modules, small focused units of behavior, and explicit boundaries between
-domain, application, and infrastructure concerns. Duplication of business rules
-MUST be reduced by extracting shared domain logic, but abstractions MUST NOT be
-introduced unless they improve clarity or change isolation. Reviewers MUST
-reject code that is difficult to understand, mixes unrelated responsibilities,
-or favors cleverness over maintainability.
+follow domain-driven design principles and MUST make domain intent obvious to a
+human reader through clear naming, cohesive modules, small focused units of
+behavior, and explicit boundaries between domain, application, and
+infrastructure concerns. Duplication of business rules MUST be reduced by
+extracting shared domain logic, but abstractions MUST NOT be introduced unless
+they improve clarity or change isolation. Reviewers MUST reject code that is
+difficult to understand, mixes unrelated responsibilities, or favors cleverness
+over maintainability.
 
 ### VII. Testing Standards
 Behavior-changing work MUST include automated tests at the level that best
@@ -128,8 +130,9 @@ retrieval at expected scale.
    justified in the specification with the business rule that makes absence
    valid. The canonical example is `WINE -> APPELLATION` being nullable when
    `WINE -> REGION` is present instead.
-5. A cellar MUST contain one or more compartments. A bottle MUST NOT exist
-   without a cellar or without a compartment.
+5. A cellar MUST be created with at least one compartment and MUST contain at
+   least one compartment at all times. A bottle MUST NOT exist without being
+   assigned to both a cellar and a compartment.
 6. Membership and permissions MUST be traceable. Specifications MUST identify
    which role can perform each cellar action: view contents, add bottles, move
    bottles, remove bottles, and manage sharing.
@@ -167,8 +170,10 @@ retrieval at expected scale.
 8. Every implementation-oriented spec MUST define expected code quality,
    required automated test coverage, user experience consistency constraints,
    and any relevant measurable performance targets.
-9. Any exception to these rules MUST be documented in a dedicated constitution
-   check with rationale, rejected alternatives, and impact on traceability.
+9. Any exception to these rules MUST be documented inline in the specification
+   under a clearly labelled "Constitution Exception" heading, stating the rule
+   being excepted, the rationale, rejected alternatives, and the impact on
+   traceability.
 
 ## Governance
 
@@ -185,13 +190,20 @@ MUST verify that the proposal:
 - models cellar sharing through membership and cellar-level roles
 - preserves separation between wine master data and bottle inventory
 - uses canonical geography concepts consistently
-- defines event history for state-changing actions
+- defines event history for state-changing actions with a singular explicit
+  primary target per-event
 - documents every nullable relationship with explicit justification
-- sets reviewable expectations for code quality, testing, UX consistency, and
-  performance where relevant
+- follows domain-driven design, clean code, and clean architecture principles
+  with clear domain/application/infrastructure boundaries
+- includes automated tests for any behavior-changing work, traceable to the
+  specification or user story they validate
+- preserves UX consistency in terminology, permission semantics, validation
+  behavior, and feedback patterns
+- states measurable performance expectations for any feature with user-visible
+  latency, throughput, or data-volume implications
 
 Specifications and plans MUST NOT proceed with unresolved constitutional
 violations unless the violation is explicitly documented, justified, and
 approved as a temporary exception.
 
-**Version**: 1.3.0 | **Ratified**: 2026-03-15 | **Last Amended**: 2026-03-17
+**Version**: 1.4.0 | **Ratified**: 2026-03-15 | **Last Amended**: 2026-04-21

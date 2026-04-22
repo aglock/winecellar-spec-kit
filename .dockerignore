@@ -6,3 +6,5 @@ target
 coverage
 *.log
 .env*
+Dockerfile*
+.dockerignore

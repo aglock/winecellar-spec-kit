@@ -20,7 +20,7 @@ A premium wine cellar management application built with React, Vite, and Tailwin
 ### Installation
 
 ```bash
-cd frontend-template
+cd frontend
 npm install
 ```
 

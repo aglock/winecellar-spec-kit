@@ -1,0 +1,9 @@
+spring:
+  data:
+    mongodb:
+      uri: ${SPRING_DATA_MONGODB_URI:mongodb://localhost:27017/winecellar}
+
+logging:
+  level:
+    root: INFO
+    com.winecellar.importer: DEBUG
