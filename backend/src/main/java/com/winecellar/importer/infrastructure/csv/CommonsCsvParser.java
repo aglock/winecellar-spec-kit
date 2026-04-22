@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
 public class CommonsCsvParser {
 
   public List<CsvRow> parse(InputStream inputStream) throws IOException {
-    try (Reader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
+    try (Reader reader = new InputStreamReader(inputStream, StandardCharsets.ISO_8859_1);
          CSVParser parser = CSVFormat.DEFAULT.builder()
              .setHeader()
              .setSkipHeaderRecord(true)
