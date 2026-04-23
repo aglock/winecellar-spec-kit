@@ -100,6 +100,8 @@ When relevant to the feature, requirements MUST explicitly cover:
 - alignment with `docs/resources/grapes-masterlist.json` for grape concepts
 - justification for every nullable relationship
 - code quality and maintainability expectations for the affected implementation
+- GoF pattern preference where applicable, with explicit role-based naming when
+  patterns are implemented
 - required automated test coverage for changed behavior
 - user experience consistency rules for terminology, states, and feedback
 - measurable performance requirements where relevant

@@ -81,6 +81,8 @@ relevant subset of:
 - validation or import logic against `docs/resources/grapes-masterlist.json`
 - explicit handling of justified nullable relationships
 - quality gates for readable, maintainable code structure
+- GoF pattern usage where applicable, with explicit role-based naming for
+  pattern participants
 - performance instrumentation or verification when relevant
 - UX consistency work when the feature affects user-facing flows
 

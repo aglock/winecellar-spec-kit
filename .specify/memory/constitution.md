@@ -1,18 +1,19 @@
 <!--
 Sync Impact Report
-- Version change: 1.3.0 -> 1.4.0
+- Version change: 1.4.0 -> 1.5.0
 - Modified principles:
   - V renamed from "Canonical Reference Data, Geographic Consistency, And Readable Implementation" to
     "Domain Model Fidelity And Canonical Concepts"; heading now reflects the principle's core intent
     (domain model faithfulness to the information model and reuse of canonical types); duplicated
     implementation guidance removed (consolidated into Principle VI)
-  - VI expanded to explicitly reference domain-driven design principles
+   - VI expanded to require GoF pattern preference where applicable and explicit role-based naming
+      conventions for pattern participants (for example `BottleFactory`, `CellarObserver`, `EventBuilder`)
 - Added sections: none
 - Removed sections: none
 - Templates requiring updates:
-  - ✅ .specify/templates/plan-template.md — constitution check already covers testing, UX, performance
-  - ✅ .specify/templates/spec-template.md — no principle-driven sections changed
-  - ✅ .specify/templates/tasks-template.md — no task categories changed
+   - ✅ .specify/templates/plan-template.md — constitution check now includes GoF pattern and naming rule
+   - ✅ .specify/templates/spec-template.md — functional requirements guidance now includes GoF rule
+   - ✅ .specify/templates/tasks-template.md — quality gate guidance now includes GoF rule
 - Follow-up TODOs: none
 -->
 
@@ -81,9 +82,12 @@ human reader through clear naming, cohesive modules, small focused units of
 behavior, and explicit boundaries between domain, application, and
 infrastructure concerns. Duplication of business rules MUST be reduced by
 extracting shared domain logic, but abstractions MUST NOT be introduced unless
-they improve clarity or change isolation. Reviewers MUST reject code that is
-difficult to understand, mixes unrelated responsibilities, or favors cleverness
-over maintainability.
+they improve clarity or change isolation. Implementations SHOULD prefer
+Gang of Four design patterns when they are clearly applicable to the problem.
+When a GoF pattern is used, names of concrete pattern participants MUST reflect
+the pattern role explicitly (for example `BottleFactory`, `CellarObserver`,
+`EventBuilder`). Reviewers MUST reject code that is difficult to understand,
+mixes unrelated responsibilities, or favors cleverness over maintainability.
 
 ### VII. Testing Standards
 Behavior-changing work MUST include automated tests at the level that best
@@ -195,6 +199,8 @@ MUST verify that the proposal:
 - documents every nullable relationship with explicit justification
 - follows domain-driven design, clean code, and clean architecture principles
   with clear domain/application/infrastructure boundaries
+- favors applicable GoF patterns and uses explicit pattern-role naming when a
+   pattern is implemented
 - includes automated tests for any behavior-changing work, traceable to the
   specification or user story they validate
 - preserves UX consistency in terminology, permission semantics, validation
@@ -206,4 +212,4 @@ Specifications and plans MUST NOT proceed with unresolved constitutional
 violations unless the violation is explicitly documented, justified, and
 approved as a temporary exception.
 
-**Version**: 1.4.0 | **Ratified**: 2026-03-15 | **Last Amended**: 2026-04-21
+**Version**: 1.5.0 | **Ratified**: 2026-03-15 | **Last Amended**: 2026-04-23

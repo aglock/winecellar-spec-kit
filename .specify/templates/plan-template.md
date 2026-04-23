@@ -49,6 +49,9 @@
   design docs.
 - Code structure favors readability and maintainability over clever
   abstractions, with clear domain boundaries.
+- Where applicable, implementations favor GoF patterns, and any implemented
+  pattern uses explicit role-based naming (for example `BottleFactory`,
+  `CellarObserver`, `EventBuilder`).
 - Automated test strategy covers the critical behaviors changed by the feature.
 - UX changes preserve consistent terminology, permission semantics, and
   feedback patterns.
