@@ -1,0 +1,63 @@
+openapi: 3.1.0
+info:
+  title: Winecellar Observability Interfaces
+  version: 0.1.0
+  description: |
+    Operational contract for backend observability endpoints and telemetry ingest
+    interfaces used by this feature.
+servers:
+  - url: http://localhost:8080
+    description: Backend service
+paths:
+  /actuator/health:
+    get:
+      summary: Backend liveness and readiness status
+      operationId: getHealth
+      responses:
+        '200':
+          description: Service is up
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+  /actuator/prometheus:
+    get:
+      summary: Prometheus scrape endpoint exposed by backend
+      operationId: getPrometheusMetrics
+      responses:
+        '200':
+          description: Prometheus text exposition format
+          content:
+            text/plain:
+              schema:
+                type: string
+components:
+  schemas:
+    HealthResponse:
+      type: object
+      required: [status]
+      properties:
+        status:
+          type: string
+          example: UP
+x-telemetry-ingest:
+  otlp:
+    grpcEndpoint: http://localhost:4317
+    httpEndpoint: http://localhost:4318
+    requiredSignals:
+      - traces
+      - metrics
+    samplingPolicy:
+      successfulRequests: probabilistic-10-percent
+      failedRequests: always-sample
+x-export-resilience:
+  mode: non-blocking
+  queue: bounded
+  retry: enabled
+  overflowPolicy: drop-oldest
+x-access-control:
+  dashboardsAndUIs:
+    allowedRoles:
+      - operations
+      - admin
+    authenticationRequired: true
