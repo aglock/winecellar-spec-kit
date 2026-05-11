@@ -11,10 +11,10 @@
 
 **Purpose**: Prepare dependencies and baseline project wiring for observability work.
 
-- [ ] T001 Update backend dependencies for observability in backend/pom.xml
-- [ ] T002 Add observability base application properties in backend/src/main/resources/application.yml
-- [ ] T003 [P] Add dev profile observability settings in backend/src/main/resources/application-dev.yml
-- [ ] T004 [P] Add feature notes and local run command updates in backend/README.md
+- [X] T001 Update backend dependencies for observability in backend/pom.xml
+- [X] T002 Add observability base application properties in backend/src/main/resources/application.yml
+- [X] T003 [P] Add dev profile observability settings in backend/src/main/resources/application-dev.yml
+- [X] T004 [P] Add feature notes and local run command updates in backend/README.md
 
 ---
 
