@@ -16,17 +16,17 @@
   when the feature requires additional detail.
 -->
 
-**Backend Language/Version**: Java with Spring Boot 4  
-**Frontend Language/Version**: React Native with Vite and Tailwind 4 
-**Primary Dependencies**: Spring Boot 4, MongoDB 8, React, Tailwind 4, Vite  
+**Backend Language/Version**: Java with Spring Boot 4.0.6  
+**Frontend Language/Version**: Vue.js 3 with Vue Router, Vite, and Tailwind CSS  
+**Primary Dependencies**: Spring Boot 4.0.6, MongoDB 8, Vue.js 3, Vue Router, Tailwind CSS, Vite  
 **Storage**: MongoDB 8 document database  
 **Testing**: Backend, frontend, integration, and contract tests as relevant to the feature; all tests MUST pass after each phase before the next phase begins  
-**Target Platform**: Web application with Spring Boot backend and React Native frontend  
+**Target Platform**: Web application with Spring Boot backend and Vue.js frontend  
 **Project Type**: Full-stack application  
 **UI Design Source**: `design/design-system.json` is the required and only valid design reference for all user-facing work  
 **Data Modeling Source**: `docs/architecture/information-model.mmd` is the required source information model and MUST be translated into a MongoDB data model using document-database principles  
 **Performance Goals**: [Document measurable user-facing performance goals for this feature]  
-**Constraints**: Maintain alignment with the constitution, `design/design-system.json`, and MongoDB-oriented document modeling principles  
+**Constraints**: Maintain alignment with the constitution, `design/design-system.json`, and MongoDB-oriented document modeling principles; all frontend code changes MUST be implemented under `frontend-vue/` only  
 **Scale/Scope**: Multi-user wine cellar application with shared cellar access and membership-based authorization
 
 ## Constitution Check
@@ -95,7 +95,7 @@ backend/
 │   └── api/
 └── tests/
 
-frontend/
+frontend-vue/
 ├── src/
 │   ├── components/
 │   ├── pages/

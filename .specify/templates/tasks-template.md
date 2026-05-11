@@ -23,7 +23,7 @@ applicable.
 ## Path Conventions
 
 - **Single project**: `src/`, `tests/` at repository root
-- **Web app**: `backend/src/`, `frontend/src/`
+- **Web app**: `backend/src/`, `frontend-vue/src/`
 - **Mobile**: `api/src/`, `ios/src/` or `android/src/`
 - Paths shown below assume single project - adjust based on plan.md structure
 

@@ -20,6 +20,7 @@ From repository root:
 
 ```bash
 docker compose -f docker/mongo-compose.yml up -d
+docker compose -f docker/observability-compose.yml up -d
 ```
 
 ## Run Backend
@@ -30,6 +31,11 @@ mvn spring-boot:run
 ```
 
 Backend runs on `http://localhost:8080`.
+
+Operational endpoints:
+
+- `http://localhost:8080/actuator/health`
+- `http://localhost:8080/actuator/prometheus`
 
 ## Tests
 
